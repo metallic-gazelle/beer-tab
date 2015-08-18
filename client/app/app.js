@@ -40,7 +40,7 @@ app.factory('AttachTokens', function ($window) {
 // RUN service that authenticates all changes to url path
 app.run(function ($rootScope, $location, $window, AuthService) {
 
-  // initialize facebook JS SDK
+  // Initialize Facebook JS SDK
   $window.fbAsyncInit = function() {
   FB.init({
     appId      : '111911505825360',
@@ -50,6 +50,16 @@ app.run(function ($rootScope, $location, $window, AuthService) {
     version    : 'v2.4' // use version 2.4
   });
 
+  // Load Facebook JS SDK
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+  // Authenticate Changes to URL Path
   $rootScope.$on('$stateChangeStart', function (evt, next, current) {
     if (next.templateUrl !== 'app/auth/signup.html' && !AuthService.isAuth()) {
       $location.path('/login');
