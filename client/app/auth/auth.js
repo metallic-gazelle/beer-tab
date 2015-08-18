@@ -1,7 +1,7 @@
 var auth = angular.module('beer-tab.auth', []);
 
 auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService) {
-  
+
   $scope.user = {};
   $scope.logIn = function () {
     $window.username = $scope.user.username;
@@ -30,4 +30,20 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     AuthService.signout();
   };
 
+})
+
+// attribute directive for requiring checkbox on 21 and up and Terms of Service
+// https://medium.com/@MohanKethees/quick-angularjs-checkbox-validation-a1ade60a97f4
+.directive('checkRequired', function () {
+  return {
+    require: 'ngModel',
+    restrict: 'A',
+    link: function (scope, element, attrs, ngModel) {
+      ngModel.$validators.checkRequired = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        var match = scope.$eval(attrs.ngTrueValue) || true;
+        return value && match === value;
+      };
+    }
+  };
 });
