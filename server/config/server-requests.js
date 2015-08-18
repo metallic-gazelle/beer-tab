@@ -6,7 +6,7 @@ var User = require('./db-config.js');
 
 exports.signupUser = function (req, res) {
 
-  User.findOne({username: req.body.username, password: req.body.password})
+  User.findOne({username: req.body.username})
     .exec(function (err, user) {
       if (!user) {
         var newUser = new User(req.body);
