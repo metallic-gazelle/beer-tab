@@ -32,11 +32,8 @@
         </form>
       </div>
 
-      <div class="social-login">Or sign in with &nbsp;
-        <a href="" class="fb"><i class="fa fa-facebook"></i></a>
-        <a href="" class="tw"><i class="fa fa-twitter"></i></a>
-        <a href="" class="gp"><i class="fa fa-google-plus"></i></a>
-        <a href="" class="linked-in"><i class="fa fa-linkedin"></i></a>
+      <div id="fb-root">Or sign in with &nbsp;
+        <fb:login-button scope="public_profile,email" size="large" onlogin="fbLogIn()"></fb:login-button>
       </div>
     </section>
 
@@ -77,10 +74,8 @@
       </div>
 
       <div class="social-login">Or sign up with &nbsp;
-        <a href="" class="fb"><i class="fa fa-facebook"></i></a>
-        <a href="" class="tw"><i class="fa fa-twitter"></i></a>
-        <a href="" class="gp"><i class="fa fa-google-plus"></i></a>
-        <a href="" class="linked-in"><i class="fa fa-linkedin"></i></a>
+        <fb:login-button show-faces="true" max-rows="1" size="large"></fb:login-button>
+        <!-- <a href="" class="fb"><i class="fa fa-facebook"></i></a> -->
       </div>
     </section>
   </div>
