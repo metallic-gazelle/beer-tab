@@ -7,6 +7,8 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // Decode token (this uses angular-jwt. notice jwtHelper)
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
   // Object used to contain user's beer network
+  
+
   getTable.getTable($scope.user)
     .then(function (derp) {
       $scope.network = util.toArr(derp);
@@ -15,6 +17,7 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // $scope.network =  argle || $scope.decodedJwt.network;
   // Pull username from token to display on main page
   $scope.user = $scope.decodedJwt.username;
+  //$scope.user = "Ben";
   console.log('$scope.user', $scope.user);
 
 
@@ -39,6 +42,13 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
       }
     }
   };
+});
 
-
+main.filter('range', function() {
+  return function(input, total) {
+    total = Math.abs(parseInt(total));
+    for (var i=0; i<total; i++)
+      input.push(i);
+    return input;
+  };
 });

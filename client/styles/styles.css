@@ -25,6 +25,13 @@ input {
   list-style: none
 }
 
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+
 #login-form {
   width: 350px; 
   background: #FFF; 
@@ -330,7 +337,7 @@ table tr:hover td {
 }
 
 .beer-tab-col {
-  width: 25px;
+  width: 100px;
 }
 
 .pay-btn-col {
