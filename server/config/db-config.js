@@ -1,34 +1,44 @@
 // db-config.js -- set up database connection and schema
 // ----------------------------------------------
-var BluebirdPromise = require('bluebird');
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var Bluebird = require('bluebird'),
+    mongoose = require('mongoose'),
+    bcrypt   = require('bcrypt-nodejs');
 
 mongoose.connect('mongodb://localhost:27017/beer-tab-db');
 
 // Define user schema
-var schema = mongoose.Schema ({
-  username: { type: String, index: { unique: true } },
+var UserSchema = mongoose.Schema({
+  username: {
+    type: String,
+    index: { unique: true }
+  },
   password: String,
-  network: { type: mongoose.Schema.Types.Mixed , default: {} }
+  name: {
+    first: String,
+    last: String,
+  },
+  network: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
+  }
 });
 
 // Hash pashword before saving to database
-schema.pre('save', function(next){
-  var cipher = BluebirdPromise.promisify(bcrypt.hash);
+UserSchema.pre('save', function (next) {
+  var cipher = Bluebird.promisify(bcrypt.hash);
 
   return cipher(this.password, null, null).bind(this)
-    .then(function(hash) {
+    .then(function (hash) {
       this.password = hash;
-      next();  
+      next();
     });
 });
 
-var User = mongoose.model('User', schema);
+var User = mongoose.model('User', UserSchema);
 
-User.prototype.comparePassword = function(attemptedPassword, savedPassword, callback) {
-  bcrypt.compare(attemptedPassword, savedPassword, function(err, isMatch) {
-    if (err){
+User.prototype.comparePassword = function (attemptedPassword, savedPassword, callback) {
+  bcrypt.compare(attemptedPassword, savedPassword, function (err, isMatch) {
+    if (err) {
       callback(err);
     } else {
       callback(null, isMatch);
@@ -74,27 +84,27 @@ var user6 = new User({
   network: {'dRosson': 1}
 });
 
-user1.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user1.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
-user2.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user2.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
-user3.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user3.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
-user4.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user4.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
-user5.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user5.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
-user6.save( function(err, newUser) { 
-  if (err) {console.log('user already in DB');} 
-  else {console.log('successfully added');}
+user6.save(function (err, newUser) {
+  if (err) {console.log('user already in DB'); }
+  else {console.log('successfully added'); }
 });
