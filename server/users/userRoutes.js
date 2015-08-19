@@ -4,9 +4,6 @@ var userCtrl = require('./userController'),
 module.exports = function (app) {
   // app is the userRouter injected from middleware.js
 
-  // new auth route
-  app.get('/signedin', userCtrl.checkAuth);
-
   app.post('/login', userCtrl.login);
   app.post('/signup', userCtrl.signup);
   
