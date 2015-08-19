@@ -9,22 +9,19 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // Object used to contain user's beer network
   
 
-  getTable.getTable($scope.username) 
-    .then(function (derp) {
-      $scope.network = util.toArr(derp);
-      console.log(derp);
-      //console.log("NETWORK-------", $scope.network);
-      var networkNames = $scope.network.map(function(networkUser) {
-        return networkUser.username;
+  $scope.getTable = function(){
+    getTable.getTable($scope.username) 
+      .then(function (derp) {
+        $scope.network = util.toArr(derp);
+        console.log(derp);
       });
-      //console.log("NETWORK NAMES -------", networkNames);
-    });
+    };
 
 
   // $scope.network =  argle || $scope.decodedJwt.network;
   // Pull username from token to display on main page
   $scope.username = $scope.decodedJwt.username;
-  console.log('$scope.username', $scope.username);
+  /*console.log('$scope.username', $scope.username);*/
 
 
   //this is used to show the add friend button, and hide the
@@ -35,7 +32,7 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   //This function sends a request to the server, it returns 
   //the updated information
   $scope.sendBeer = function (user) {
-
+    
     if(user){
       console.log('sendBeer called', user);
       
