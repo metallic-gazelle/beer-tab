@@ -1,7 +1,10 @@
 var auth = angular.module('beer-tab.auth', []);
 
 auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService) {
-  
+
+  $scope.loginError = false;
+  $scope.loginErrorMessage = '';
+
   $scope.user = {};
   $scope.logIn = function () {
     $window.username = $scope.user.username;
@@ -11,7 +14,9 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
         $location.path('/main');
       })
       .catch(function (error) {
-        console.error(error);
+        console.log(error);
+        $scope.loginError = true;
+        $scope.loginErrorMessage = error.data;
       });
   };
 
@@ -30,9 +35,22 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     AuthService.signout();
   };
 
-  $scope.redirect = function(path) {
+  $scope.redirect = function (path) {
     console.log(path);
     $location.path('/' + path);
   };
 
+})
+.directive('checkRequired', function () {
+  return {
+    require: 'ngModel',
+    restrict: 'A',
+    link: function (scope, element, attrs, ngModel) {
+      ngModel.$validators.checkRequired = function (modelValue, viewValue) {
+        var value = modelValue || viewValue;
+        var match = scope.$eval(attrs.ngTrueValue) || true;
+        return value && match === value;
+      };
+    }
+  };
 });
