@@ -1,7 +1,7 @@
 var auth = angular.module('beer-tab.auth', []);
 
 auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService) {
-  
+
   $scope.user = {};
   $scope.logIn = function () {
     console.log("In legacy logIn");
