@@ -2,16 +2,19 @@ angular.module('beer-tab.services', [])
 
 .factory('AuthService', function ($http, $location, $window) {
   var authService = {};
- 
+
   authService.login = function (credentials) {
     return $http
       .post('/api/users/login', credentials)
-      .then(function (resp) {
+      .success(function (resp) {
         return resp.data.token;
+      })
+      .error(function (resp) {
+        return resp.data.err;
       });
   };
- 
-  authService.signup = function(credentials) {
+
+  authService.signup = function (credentials) {
     console.log('cred:', credentials);
     return $http
       .post('/api/users/signup', credentials)
@@ -32,9 +35,7 @@ angular.module('beer-tab.services', [])
   return authService;
 })
 
-
 .factory('getTable', function ($window, $http) {
-  
   var getTable = function (username) {
     return $http({
       method: 'POST',
@@ -47,16 +48,12 @@ angular.module('beer-tab.services', [])
     });
   };
 
-
   return {
     getTable: getTable,
   };
 })
 
-
-
 .factory('beerPmt', function ($window, $http) {
-  
   var newIOU = function (user) {
     return $http({
       method: 'POST',
@@ -64,8 +61,7 @@ angular.module('beer-tab.services', [])
       data: {token: $window.localStorage.getItem('com.beer-tab'), user: user}
     })
     .then(function (resp) {
-      //console.log(resp.data);
-        return resp.data;
+      return resp.data;
     });
   };
 
@@ -73,12 +69,13 @@ angular.module('beer-tab.services', [])
     newIOU: newIOU,
   };
 })
-.factory('util', function(){
+
+.factory('util', function () {
   var helper = {};
-  
-  helper.toArr = function (obj){
+
+  helper.toArr = function (obj) {
     var temp = [];
-    for(var key in obj){
+    for (var key in obj) {
       temp.push({
         username: key,
         tab: obj[key]
@@ -89,6 +86,3 @@ angular.module('beer-tab.services', [])
 
   return helper;
 });
-
-
-
