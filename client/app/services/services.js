@@ -32,6 +32,28 @@ angular.module('beer-tab.services', [])
   return authService;
 })
 
+// Factory to handle FB authentication
+.factory('fbAuthService', function ($http, $location, $window) {
+  var fbAuthService = {};
+
+  fbAuthService.login = function(credentials){
+
+  };
+
+  fbAuthService.signup = function(credentials){
+
+  };
+
+  fbAuthService.getLoginStatus = function(){
+
+  };
+
+  fbAuthService.logout = function(){
+
+  };
+
+  return fbAuthService;
+})
 
 .factory('getTable', function ($window, $http) {
   

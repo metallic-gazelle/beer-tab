@@ -43,7 +43,18 @@ app.factory('AttachTokens', function ($window) {
 });
 
 // RUN service that authenticates all changes to url path
-app.run(function ($rootScope, $location, AuthService) {
+app.run(function ($rootScope, $location, $window, AuthService) {
+
+  // initialize facebook JS SDK
+  $window.fbAsyncInit = function() {
+  FB.init({
+    appId      : '111911505825360',
+    cookie     : true,  // enable cookies to allow the server to access 
+                        // the session
+    xfbml      : true,  // parse social plugins on this page
+    version    : 'v2.4' // use version 2.4
+  });
+
   $rootScope.$on('$stateChangeStart', function (evt, next, current) {
     if (next.templateUrl !== 'app/auth/signup.html' && !AuthService.isAuth()) {
       $location.path('/login');
