@@ -41,7 +41,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   };
 
   $scope.fbSignUp = function() {
-
+    fbAuthService.signup();
   };
 
   $scope.fbLogOut = function(){

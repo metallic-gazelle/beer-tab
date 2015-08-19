@@ -37,9 +37,8 @@ angular.module('beer-tab.services', [])
   var fbAuthService = {};
 
   fbAuthService.login = function(credentials){
-    console.log("in FB login");
     FB.login(function(res){
-      console.log(res);
+      console.log(res.authResponse);
     })
     fbAuthService.checkLoginStatus();
   };
@@ -51,48 +50,32 @@ angular.module('beer-tab.services', [])
   fbAuthService.checkLoginStatus = function(){
     FB.getLoginStatus(function(res){
       console.log("Token: " + res.authResponse.accessToken);
-      fbAuthService.handleLoginStatus(res);
+      return !!res.authResponse.accessToken;
     });
   };
 
-  fbAuthService.handleLoginStatus = function(res){
-    // var _self = this;
+  // fbAuthService.handleLoginStatus = function(res){
 
-    if (res.status === 'connected'){
-      console.log("User logged into app and facebook");
-      fbAuthService.getUserInfo();
-    } else {
-      console.log("User not logged in");
-    }
+  //   if (res.status === 'connected'){
+  //     console.log("User logged into app and facebook");
+  //     fbAuthService.getUserInfo();
+  //   } else {
+  //     console.log("User not logged in");
+  //   }
 
-  };
+  // };
 
-  fbAuthService.watchLoginStatus = function(){
-    var _self = this;
+  // fbAuthService.getUserInfo = function() {
+  //   var _self = this;
 
-    FB.Event.subscribe('auth.authResponseChange', function(res) {
-
-      if (res.status === 'connected') {
-        console.log("User connected");
-        _self.getUserInfo();
-      } 
-      else {
-        console.log("Not logged in");
-      }
-    });
-  };
-
-
-  fbAuthService.getUserInfo = function() {
-    var _self = this;
-
-    FB.api('/me', function(res) {
-      $rootScope.$apply(function() {
-        console.log("Successful Login: " + res)
-        $rootScope.user = res; 
-      });
-    });
-  };
+  //   FB.api('/me', function(res) {
+  //     // $rootScope.$apply(function() {
+  //       console.log("Successful Login: " + res);
+  //       $rootScope.user = res; 
+  //       console.log("rootScope: " + $rootScope);
+  //     // });
+  //   });
+  // };
 
   fbAuthService.logout = function(){
     var _self = this;
