@@ -31,6 +31,11 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     AuthService.signout();
   };
 
+  $scope.redirect = function(path) {
+    console.log(path);
+    $location.path('/' + path);
+  };
+  
   // FACEBOOK AUTHENTICATION
   $scope.fbLogIn = function() {
     fbAuthService.login()
