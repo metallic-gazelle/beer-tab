@@ -33,11 +33,15 @@ angular.module('beer-tab.services', [])
 })
 
 // Factory to handle FB authentication
-.factory('fbAuthService', function ($http, $location, $window) {
+.factory('fbAuthService', function ($rootScope, $http, $location, $window) {
   var fbAuthService = {};
 
   fbAuthService.login = function(credentials){
-
+    console.log("in FB login");
+    FB.login(function(res){
+      console.log(res);
+    })
+    fbAuthService.checkLoginStatus();
   };
 
   fbAuthService.signup = function(credentials){
@@ -47,7 +51,7 @@ angular.module('beer-tab.services', [])
   fbAuthService.checkLoginStatus = function(){
     FB.getLoginStatus(function(res){
       console.log("Token: " + res.authResponse.accessToken);
-      handleLoginStatus(res);
+      fbAuthService.handleLoginStatus(res);
     });
   };
 
@@ -56,7 +60,7 @@ angular.module('beer-tab.services', [])
 
     if (res.status === 'connected'){
       console.log("User logged into app and facebook");
-      getUserInfo();
+      fbAuthService.getUserInfo();
     } else {
       console.log("User not logged in");
     }
