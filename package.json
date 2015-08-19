@@ -5,26 +5,22 @@
   "main": "server/server.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/ViridescentGrizzly/beer-tab.git"
+    "url": "https://github.com/metallic-gazelle/beer-tab.git"
   },
   "license": "MIT",
-  "author": "Viridescent Grizzly",
+  "author": "Metallic Gazelle",
   "contributors": [
     {
-      "name": "Michael Kurrels",
-      "email": "mjkurrels@gmail.com"
+      "name": "Chris Saden"
     },
     {
-      "name": "Nate Meier",
-      "email": "iemanatemire@gmail.com"
+      "name": "Rob Hays"
     },
     {
-      "name": "Andrés Viesca",
-      "email": "viestat@icloud.com"
+      "name": "Ben Biran"
     },
     {
-      "name": "Steven Wu",
-      "email": "wucommasteven@gmail.com"
+      "name": "Max Ince"
     }
   ],
   "devDependencies": {

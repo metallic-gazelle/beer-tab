@@ -14,16 +14,13 @@ An app that allows friends to keep track of beers that they owe each other.
 
 ## Team
 
-  - __Product Owner__: Nate Meier
-  - __Scrum Master__: Andrés Viesca
-  - __Development Team Members__: Steven Wu, Michael Kurrels
+  - __Product Owner__: Max Ince
+  - __Scrum Master__: Chris Saden
+  - __Development Team Members__: Ben Biran, Rob Hays
 
 ## Usage
 
-Users type in the name of a friend to whom they owe a beer. The beer recipient is made aware that they 
-are owed a beer in their personal tab network. Users can confirm that they have recieved the beer that 
-they were owed using the "Receive" button. Additionally, users can use the "Owe" button to notify a contact
-that they owe them another beer.
+Users type in the name of a friend to whom they owe a beer. The beer recipient is made aware that they are owed a beer in their personal tab network. Users can confirm that they have recieved the beer that they were owed using the "Receive" button. Additionally, users can use the "Owe" button to notify a contact that they owe them another beer.
 
 ## Requirements
 
