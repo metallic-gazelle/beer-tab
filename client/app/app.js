@@ -40,7 +40,6 @@ app.factory('AttachTokens', function ($window) {
 // RUN service that authenticates all changes to url path
 app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
 
-  $rootScope.user = {};
   // Initialize Facebook JS SDK
   $window.fbAsyncInit = function() {
     FB.init({
