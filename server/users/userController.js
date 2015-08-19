@@ -21,7 +21,7 @@ module.exports = {
           });
         } else {
           console.log('Error: Account already exists');
-          res.status(418).end();
+          res.status(401).end('');
         }
       });
   },
@@ -30,15 +30,23 @@ module.exports = {
     var username = req.body.username;
     var password = req.body.password;
 
+    if (!username || !password) {
+      res.status(401).end('Email and password required to login.');
+    }
+
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
-          res.status(400).end('Username not found.');
+          res.status(401).end('Username not found.');
         } else {
           user.comparePassword(password, user.password, function (err, match) {
+            if (err) {
+              res.status(err.status).end('Unable to login. Please try again.');
+            }
             if (match) {
               var token = jwt.encode(user, 'argleDavidBargleRosson');
-              res.status(201).end({token: token});
+              res.json({token: token});
+              res.status(200).end();
             } else {
               res.status(401).end('Incorrect password. Try again.');
             }

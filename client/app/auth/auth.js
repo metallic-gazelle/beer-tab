@@ -2,6 +2,9 @@ var auth = angular.module('beer-tab.auth', []);
 
 auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService) {
 
+  $scope.loginError = false;
+  $scope.loginErrorMessage = '';
+
   $scope.user = {};
   $scope.logIn = function () {
     $window.username = $scope.user.username;
@@ -11,7 +14,9 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
         $location.path('/main');
       })
       .catch(function (error) {
-        console.error(error);
+        console.log(error);
+        $scope.loginError = true;
+        $scope.loginErrorMessage = error.data;
       });
   };
 

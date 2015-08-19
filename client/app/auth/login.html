@@ -23,11 +23,8 @@
             <li><span class="remember"><input type="checkbox" id="check"> <label for="check">Remember Me</label></span><span class="remember"><a href="">Forgot Password</a></span></li>
             <li><input type="submit" value="SIGN IN" class="btn" ng-disabled="log-in.$invalid"></li>
 
-            <div class="alert" ng-show="login.username.$touched">
-              <small class="alert alert-warning" ng-show="login.username.$error.required">Please enter a username.</small>
-            </div>
-            <div class="alert" ng-show="login.password.$touched">
-              <small class="alert alert-warning" ng-show="login.password.$error.required">Please enter a password.</small>
+            <div class="alert" ng-show="loginError">
+              <small class="alert alert-warning">{{ loginErrorMessage }}</small>
             </div>
           </ul>
         </form>
