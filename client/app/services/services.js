@@ -46,6 +46,7 @@ angular.module('beer-tab.services', [])
 
   fbAuthService.checkLoginStatus = function(){
     FB.getLoginStatus(function(res){
+      console.log("Token: " + res.authResponse.accessToken);
       handleLoginStatus(res);
     });
   };
@@ -56,18 +57,31 @@ angular.module('beer-tab.services', [])
     if (res.status === 'connected'){
       console.log("User logged into app and facebook");
       getUserInfo();
-
-    } else if (res.status === 'not_authorized'){
-      console.log("User logged into facebook, but not app");
-
     } else {
       console.log("User not logged in");
     }
 
   };
 
+  fbAuthService.watchLoginStatus = function(){
+    var _self = this;
+
+    FB.Event.subscribe('auth.authResponseChange', function(res) {
+
+      if (res.status === 'connected') {
+        console.log("User connected");
+        _self.getUserInfo();
+      } 
+      else {
+        console.log("Not logged in");
+      }
+
+    });
+  };
+
+
   fbAuthService.getUserInfo = function() {
-    // var _self = this;
+    var _self = this;
 
     FB.api('/me', function(res) {
       $rootScope.$apply(function() {
@@ -81,6 +95,7 @@ angular.module('beer-tab.services', [])
     var _self = this;
 
     FB.logout(function(response) {
+      console.log(response);
       $rootScope.$apply(function() { 
         $rootScope.user = _self.user = {}; 
       }); 
