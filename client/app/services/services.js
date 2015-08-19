@@ -5,7 +5,7 @@ angular.module('beer-tab.services', [])
  
   authService.login = function (credentials) {
     return $http
-      .post('/login', credentials)
+      .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
       });
@@ -14,7 +14,7 @@ angular.module('beer-tab.services', [])
   authService.signup = function(credentials) {
     console.log('cred:', credentials);
     return $http
-      .post('/signup', credentials)
+      .post('/api/users/signup', credentials)
       .then(function (resp) {
         return resp.data.token;
       });
@@ -35,14 +35,14 @@ angular.module('beer-tab.services', [])
 
 .factory('getTable', function ($window, $http) {
   
-  var getTable = function (user) {
+  var getTable = function (username) {
     return $http({
       method: 'POST',
-      url: '/table',
-      data: {user: user}
+      url: '/api/users/table',
+      data: {username: username}
     })
     .then(function (resp) {
-      console.log(resp.data);
+      //console.log(resp.data);
       return resp.data;
     });
   };
@@ -60,15 +60,14 @@ angular.module('beer-tab.services', [])
   var newIOU = function (user) {
     return $http({
       method: 'POST',
-      url: '/tabs',
+      url: '/api/users/tabs',
       data: {token: $window.localStorage.getItem('com.beer-tab'), user: user}
     })
     .then(function (resp) {
-      console.log(resp.data);
+      //console.log(resp.data);
         return resp.data;
     });
   };
-
 
   return {
     newIOU: newIOU,

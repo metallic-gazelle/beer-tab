@@ -7,28 +7,38 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // Decode token (this uses angular-jwt. notice jwtHelper)
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
   // Object used to contain user's beer network
-  getTable.getTable($scope.user)
+  
+
+  getTable.getTable($scope.username) 
     .then(function (derp) {
       $scope.network = util.toArr(derp);
+      console.log(derp);
+      //console.log("NETWORK-------", $scope.network);
+      var networkNames = $scope.network.map(function(networkUser) {
+        return networkUser.username;
+      });
+      //console.log("NETWORK NAMES -------", networkNames);
     });
+
 
   // $scope.network =  argle || $scope.decodedJwt.network;
   // Pull username from token to display on main page
-  $scope.user = $scope.decodedJwt.username;
-  console.log('$scope.user', $scope.user);
+  $scope.username = $scope.decodedJwt.username;
+  console.log('$scope.username', $scope.username);
 
 
   //this is used to show the add friend button, and hide the
   // new friend form
   $scope.clicked = false;
-
-
-  //This function sennds a request to the server, it returns 
+  /*$scope.network = [];*/
+  
+  //This function sends a request to the server, it returns 
   //the updated information
   $scope.sendBeer = function (user) {
 
     if(user){
       console.log('sendBeer called', user);
+      
       if(AuthService.isAuth()) {
         beerPmt.newIOU(user)
         .then(function(derp){
@@ -39,6 +49,13 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
       }
     }
   };
+});
 
-
+main.filter('range', function() {
+  return function(input, total) {
+    total = Math.abs(parseInt(total));
+    for (var i=0; i<total; i++)
+      input.push(i);
+    return input;
+  };
 });

@@ -1,12 +1,15 @@
 
 <div class='container' data-ng-controller="MainCtrl"> 
 
-  <h1> Hello, {{user}}!</h1>
-
+  <h1> Hello, {{username}}!</h1>
   <table ng-table class="table">
       <tr ng-repeat="user in network | orderBy:'username'">
           <td class="username-col" data-title="'Username'">{{user.username}}</td>
-          <td class="beer-tab-col" data-title="'Tab'">{{user.tab}}</td>
+          <td class="beer-tab-col" data-title="'Tab'">
+            <span ng-repeat="n in [] | range:user.tab">
+              <i class="fa fa-beer fa-lg" ng-class="{'red': (user.tab<0), 'green': (user.tab>0)}"></i>
+            </span>
+          </td>
           <td class="pay-btn-col"> 
             <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username)">Got Beer</button>
             <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username)">Send Beer</button>
@@ -15,6 +18,7 @@
   </table>
 
   <div class="login">
+  <dropdown placeholder="Colour..." list="colours" selected="colour" property="name"></dropdown>
   <button class="add-friend-btn" ng-hide="clicked" ng-click="clicked = true; toUser = '';">Add New Friend</button>
     <form ng-submit="sendBeer(toUser)" name="send-beer" novalidate>
       <ul class="ul-list" ng-show="clicked">
