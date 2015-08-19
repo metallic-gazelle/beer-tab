@@ -75,13 +75,12 @@ angular.module('beer-tab.services', [])
       else {
         console.log("Not logged in");
       }
-
     });
   };
 
 
   fbAuthService.getUserInfo = function() {
-    var _self = this;
+    // var _self = this;
 
     FB.api('/me', function(res) {
       $rootScope.$apply(function() {
