@@ -33,18 +33,14 @@ module.exports = {
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
-          res.status(418).end();
+          res.status(400).end('Username not found.');
         } else {
           user.comparePassword(password, user.password, function (err, match) {
             if (match) {
               var token = jwt.encode(user, 'argleDavidBargleRosson');
-              res.json({token: token});
-              console.log('Success: Logged in');
-              res.status(201).end();
-
+              res.status(201).end({token: token});
             } else {
-              console.log('Error: Incorrect password');
-              res.status(418).end();
+              res.status(401).end('Incorrect password. Try again.');
             }
           });
         }
