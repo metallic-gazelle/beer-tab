@@ -32,6 +32,91 @@ angular.module('beer-tab.services', [])
   return authService;
 })
 
+// Factory to handle FB authentication
+.factory('fbAuthService', function ($rootScope, $q, $http, $location, $window) {
+  var fbAuthService = {};
+
+  fbAuthService.login = function(){
+    //return a promise that handles FB login
+    var asyncLogin = function() {
+      var deferred = $q.defer();
+
+      FB.login(function(res){
+        deferred.resolve(res);
+      }, {scope: 'public_profile,email'});
+
+      return deferred.promise;
+    };
+
+    // login async
+    asyncLogin();
+    
+  };
+
+  fbAuthService.signup = function(){
+
+    // user object that will be populated by
+    // facebook login
+    var newUser = {username: null, name:{}, token: null};
+
+    //return a promise that handles FB login
+    var asyncLogin = function() {
+      var deferred = $q.defer();
+
+      FB.login(function(res){
+        deferred.resolve(res);
+      }, {scope: 'public_profile,email'});
+
+      return deferred.promise;
+    };
+
+    // login async
+    asyncLogin()
+      // query FB api -->
+        // userId will be used as username
+        // split name to get First & Last
+      .then(function(){
+        FB.api('/me', function(resp){
+          newUser['username'] = resp.id;
+          var full_name = resp.name;
+          var split = full_name.split(" ");
+          newUser['name']['first'] = split[0];
+          newUser['name']['last']  = split[split.length-1];
+        });
+      })
+      // getLoginStatus provides access to token,
+      // attach to newUser object as well
+      .then(function(){
+        FB.getLoginStatus(function(resp){
+          var token = resp.authResponse.accessToken;
+          newUser['token'] = token;
+          console.log(newUser);
+        })
+      })
+      // post request to our api to save user to db
+      .then(function(){
+        return $http
+          .post('/api/users/signup', newUser)
+          .then(function (resp) {
+            return resp.data.token;
+          });
+      })
+
+  };
+
+  fbAuthService.logout = function(){
+    var _self = this;
+
+    FB.logout(function(response) {
+      console.log(response);
+      $rootScope.$apply(function() { 
+        $rootScope.user = _self.user = {}; 
+      }); 
+    });
+  };
+
+  return fbAuthService;
+})
 
 .factory('getTable', function ($window, $http) {
   
