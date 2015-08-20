@@ -8,9 +8,10 @@ angular.module('beer-tab.services', [])
       .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
-      }, function (resp) {
-        return resp.data.err;
-      });
+      })
+      .catch(function(err){
+        throw err;
+      })
   };
 
   authService.signup = function (credentials) {
