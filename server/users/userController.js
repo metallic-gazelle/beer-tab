@@ -12,6 +12,7 @@ module.exports = {
         });
     },
 
+
     signup: function(req, res, next) {
 
         User.findOne({
