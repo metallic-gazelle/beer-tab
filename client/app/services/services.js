@@ -3,14 +3,15 @@ angular.module('beer-tab.services', [])
 .factory('AuthService', function ($http, $location, $window) {
   var authService = {};
 
-  authService.login = function (credentials) {
+  authService.login = function (credentials) {  
     return $http
       .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
-      }, function (resp) {
-        return resp.data.err;
-      });
+      })
+      .catch(function(err){
+        throw err;
+      })
   };
 
   authService.signup = function (credentials) {
@@ -18,7 +19,7 @@ angular.module('beer-tab.services', [])
     return $http
       .post('/api/users/signup', credentials)
       .then(function (resp) {
-        return resp.data.token;
+        return resp.data.token;       
       });
   };
 
