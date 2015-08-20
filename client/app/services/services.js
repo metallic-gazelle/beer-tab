@@ -63,6 +63,7 @@ angular.module('beer-tab.services', [])
       return resp.data;
     });
   };
+
   var findUsers = function () {
     return $http({
       method: 'GET',

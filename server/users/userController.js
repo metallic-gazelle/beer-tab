@@ -1,38 +1,18 @@
-var jwt  = require('jwt-simple'),
+var jwt = require('jwt-simple'),
     User = require('./userModel');
 
 module.exports = {
-
-  signup: function (req, res, next) {
-
-    User.findOne({username: req.body.username})
-      .exec(function (err, user) {
-        if (!user) {
-          var newUser = new User(req.body);
-          newUser.save(function (err, newUser) {
-            if (err) {
-              next(err);
-            } else {
-              var token = jwt.encode(newUser, 'argleDavidBargleRosson');
-              res.json({token: token});
-              console.log('Success: Account added to database.');
-              res.status(201).end();
-            }
-          });
-        } else {
-          res.status(401).end('Error: Account already exists');
-        }
-      });
+  findAllUsers: function (req, res) {
+    User.find({}, function(err, docs) {
+      if (!err) {
+        res.json(docs);
+      } else {
+        console.error(err);
+      }
+    });
   },
 
-  login: function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
-
-    if (!username || !password) {
-      res.status(401).end('Email and password required to login.');
-    }
-
+  signup: function (req, res, next) {
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
@@ -54,7 +34,35 @@ module.exports = {
       });
   },
 
-  getTable: function (req, res) {
+  login: function(req, res, next) {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    if (!username || !password) {
+      res.status(401).end('Email and password required to login.');
+    }
+    User.findOne({username: username})
+      .exec(function(err, user) {
+        if (!user) {
+          res.status(401).end('Username not found.');
+        } else {
+          user.comparePassword(password, user.password, function(err, match) {
+            if (err) {
+              res.status(err.status).end('Unable to login. Please try again.');
+            }
+            if (match) {
+              var token = jwt.encode(user, 'argleDavidBargleRosson');
+              res.json({token: token});
+              res.status(200).end();
+            } else {
+              res.status(401).end('Incorrect password. Try again.');
+            }
+          });
+        }
+    });
+  },
+
+  getTable: function(req, res) {
     //Here we distribute the data we received from the request
     var username = req.body.username;
     //we need a temporal variable to use the update method on the db.
@@ -62,18 +70,17 @@ module.exports = {
 
     //This query finds the receiver in the db
     User.findOne({username: username})
-      .exec(function (err, user) {
+      .exec(function(err, user) {
         if (!user) {
           console.log('attempted to route to tabs, but person not found!');
           res.status(500).end();
         } else {
           res.status(201).send(user.network);
         }
-
-      });
+    });
   },
 
-  toTabs: function (req, res) {
+  toTabs: function(req, res) {
     //Here we distribute the data we received from the request
     var receiver = req.body.user;
     //since we got a token we need to decode it first
@@ -90,8 +97,8 @@ module.exports = {
       res.status(500).end();
     } else {
       //This query finds the receiver in the db
-      User.findOne({ username: receiver })
-        .exec(function (err, user) {
+      User.findOne({username: receiver})
+        .exec(function(err, user) {
           if (!user) {
             console.log('attempted to route to tabs, but person not found!');
             res.status(500).end();
@@ -107,12 +114,14 @@ module.exports = {
             temp = user;
             //We use the update method, here we replace the old
             //network object, with the one insede temp
-            User.update({_id: user._id}, {$set: {network: temp.network}}, function (err) {
-              if (err) { return err; }
+            User.update({_id: user._id}, {$set: {network: temp.network}}, function(err) {
+              if (err) {
+                return err;
+              }
             });
             //this does the exact same thing, but from the sender's perspective
-            User.findOne({ username: sender })
-              .exec(function (err, user) {
+            User.findOne({username: sender})
+              .exec(function(err, user) {
                 if (!user) {
                   console.log('attempted to route to tabs, but person not found!');
                   res.status(500).end();
@@ -128,13 +137,14 @@ module.exports = {
                   temp = user;
                   //We use the update method, here we replace the old
                   //network object, with the one insede temp
-                  User.update({_id: user._id}, {$set: {network: temp.network}}, function (err) {
-                    if (err) { return err; }
+                  User.update({_id: user._id}, {$set: {network: temp.network}}, function(err) {
+                    if (err) {
+                      return err;
+                    }
                   });
                   //this sends the updated user to the client;
                   res.status(201).send(user);
                 }
-
               });
           }
         });
