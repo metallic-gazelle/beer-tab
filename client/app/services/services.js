@@ -6,21 +6,19 @@ angular.module('beer-tab.services', [])
   authService.login = function (credentials) {
     return $http
       .post('/api/users/login', credentials)
-      .success(function (resp) {
-        return resp.data.token;
-      })
-      .error(function (resp) {
-        return resp.data.err;
-      });
-  };
-
-  authService.login = function (credentials) {
-    return $http
-      .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
       }, function (resp) {
         return resp.data.err;
+      });
+  };
+
+  authService.signup = function (credentials) {
+    console.log('cred:', credentials);
+    return $http
+      .post('/api/users/signup', credentials)
+      .then(function (resp) {
+        return resp.data.token;
       });
   };
 
