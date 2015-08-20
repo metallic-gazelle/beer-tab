@@ -8,8 +8,9 @@ angular.module('beer-tab.services', [])
       .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
-      }, function (resp) {
-        return resp.data.err;
+      })
+      .catch(function (error) {
+        throw error;
       });
   };
 
@@ -42,7 +43,6 @@ angular.module('beer-tab.services', [])
       data: {username: username}
     })
     .then(function (resp) {
-      //console.log(resp.data);
       return resp.data;
     });
   };
@@ -63,9 +63,20 @@ angular.module('beer-tab.services', [])
       return resp.data;
     });
   };
+  var findUsers = function () {
+    return $http({
+      method: 'GET',
+      url: 'api/users/tabs'
+    })
+    .then(function (resp) {
+      console.log(resp.data);
+      return resp.data;
+    });
+  };
 
   return {
     newIOU: newIOU,
+    findUsers: findUsers
   };
 })
 
