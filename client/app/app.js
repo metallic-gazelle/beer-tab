@@ -1,4 +1,4 @@
-var app = angular.module('app', ['beer-tab.auth', 'beer-tab.main', 'beer-tab.services', 'ui.router']);
+var app = angular.module('app', ['beer-tab.auth', 'beer-tab.main', 'beer-tab.services', 'ui.router', 'ui.select', 'ngSanitize']);
 
 app.config(function ($stateProvider, $httpProvider, $urlRouterProvider) {
 

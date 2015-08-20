@@ -46,6 +46,32 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
       }
     }
   };
+      $scope.findUser = function(inputStr) {
+         $scope.results = [];
+        beerPmt.findUsers().then(function(data) {
+            if (inputStr.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].name.first.toLowerCase().match(inputStr.toLowerCase()) !== null || data[i].name.last.toLowerCase().match(inputStr.toLowerCase())!==null) {
+                        $scope.results.push({name: data[i].name.first +' '+data[i].name.last, username: data[i].username});
+                    }
+                }
+
+            }
+            console.log($scope.results);
+        });
+    };
+    $scope.toggle = function() {
+        if ($scope.clicked === false) {
+            $scope.clicked = true;
+        } else {
+            $scope.clicked = false;
+        }
+    };
+    $scope.clearField = function() {
+        $scope.toUser = '';
+        $scope.results = [];
+
+    };
 });
 
 main.filter('range', function() {
