@@ -2,20 +2,16 @@ var main = angular.module('beer-tab.main', ['beer-tab.services', 'angular-jwt', 
 
 
 main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthService, getTable, util) {
-  // Retrieve token from localStorage
+  // Retrieve Native Token from Local Storage
   $scope.jwt = $window.localStorage.getItem('com.beer-tab');
-  var tempToken = JSON.parse($scope.jwt);
-  console.log("tempToken", tempToken);
-  // Decode token (this uses angular-jwt. notice jwtHelper)
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
-  if (!!tempToken.hasOwnProperty('fb')){
-    console.log("Has fbToken");
-    $scope.decodedJwt = tempToken;
-  }
-  // Object used to contain user's beer network
   
+  // Retrieve FB Token from Local Storage
+  $scope.fb = $window.localStorage.getItem('com.beer-tab-fb');
+  $scope.fb = JSON.parse($scope.fb); 
 
   $scope.getTable = function(){
+    console.log("Getting Table For: ", $scope.username);
     getTable.getTable($scope.username) 
       .then(function (derp) {
         $scope.network = util.toArr(derp);
@@ -23,13 +19,14 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
       });
     };
 
-
-  // $scope.network =  argle || $scope.decodedJwt.network;
   // Pull username from token to display on main page
-  $scope.displayname = $scope.decodedJwt.displayname || $scope.decodedJwt.username;
-  $scope.username = tempToken.username || $scope.decodedJwt.username;
-  /*console.log('$scope.username', $scope.username);*/
-
+  if (!!$scope.fb){
+    $scope.displayname = $scope.fb.displayname;
+    $scope.username = $scope.fb.username;
+  } else {
+    $scope.displayname = $scope.decodedJwt.username;
+    $scope.username = $scope.decodedJwt.username;
+  }
 
   //this is used to show the add friend button, and hide the
   // new friend form
