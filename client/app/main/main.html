@@ -23,7 +23,13 @@
     <form ng-submit="sendBeer(toUser)" name="send-beer" novalidate>
       <ul class="ul-list" ng-show="clicked">
         <li class='center'>
-          <div><input type="text" class="send-beer input" placeholder="I owe a beer to..." ng-model="toUser" ng-minlength="3" ng-maxlength="20" required><span class="icon"><i class="fa fa-user"></i></span></li>
+           <ui-select ng-model='result.selected' on-select='sendBeer(result.selected.username); toggle()'  theme="bootstrap" ng-disabled="false" reset-search-input="false" uiSelectConfig.appendToBody = true; style="width: 300px;">
+              <ui-select-match id='ui-select-container' placeholder="I owe a beer to...">{{$select.selected.name}}</ui-select-match>
+              <ui-select-choices repeat='user in results|limitTo:10' refresh='findUser($select.search)' refresh-delay='0'>
+                <div ng-bind-html='user.name | highlight: $select.search'></div>
+              </ui-select-choices>
+            </ui=select>
+          <!-- <div><input type="text" class="send-beer input" placeholder="I owe a beer to..." ng-model="toUser" ng-minlength="3" ng-maxlength="20" required><span class="icon"><i class="fa fa-user"></i></span></li> -->
         <li><input type="submit" value="SEND BEER" class="btn btn2" ng-disabled="login.$invalid" disabled="disabled" ng-click="clicked = false;"></li>
       </ul>
     </form>

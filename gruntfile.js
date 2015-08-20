@@ -38,7 +38,10 @@ module.exports = function(grunt) {
           'bower_components/ng-table/dist/ng-table.min.js',
           'bower_components/angular-jwt/dist/angular-jwt.min.js',
           'bower_components/angular-ui-router/release/angular-ui-router.min.js',
-          'bower_components/bootstrap/dist/js/bootstrap.min.js'
+          'bower_components/bootstrap/dist/js/bootstrap.min.js',
+          "bower_components/angular-sanitize/angular-sanitize.js",
+          "bower_components/angular-ui-select/dist/select.js",
+
         ],
         dest: 'client/dist/lib.min.js',
       }
@@ -79,6 +82,15 @@ module.exports = function(grunt) {
           expand: true,
           cwd: 'bower_components/ng-table/dist/',
           src: ['ng-table.css', '!*.min.css'],
+          dest: 'client/dist/',
+          ext: '.min.css'
+        }]
+      },
+      uiSelect: {
+         files: [{
+          expand: true,
+          cwd: 'bower_components/angular-ui-select/dist/',
+          src: ['select.css', '!*.min.css'],
           dest: 'client/dist/',
           ext: '.min.css'
         }]
