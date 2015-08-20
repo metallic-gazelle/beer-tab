@@ -25,7 +25,11 @@ angular.module('beer-tab.services', [])
   };
 
   authService.signout = function () {
-    $window.localStorage.removeItem('com.beer-tab');
+    var token = $window.localStorage.getItem('com.beer-tab');
+    token = JSON.parse(token) || token;
+    if (!token.hasOwnProperty('fb')){
+      $window.localStorage.removeItem('com.beer-tab');
+    }
     $location.path('/login');
   };
 
@@ -93,13 +97,9 @@ angular.module('beer-tab.services', [])
   };
 
   fbAuthService.logout = function(){
-    var _self = this;
 
     FB.logout(function(response) {
       console.log(response);
-      $rootScope.$apply(function() { 
-        $rootScope.user = _self.user = {}; 
-      }); 
     });
   };
 
@@ -109,13 +109,14 @@ angular.module('beer-tab.services', [])
 .factory('getTable', function ($window, $http) {
   
   var getTable = function (username) {
+    console.log("Username in Get Table:", username);
     return $http({
       method: 'POST',
       url: '/api/users/table',
       data: {username: username}
     })
     .then(function (resp) {
-      //console.log(resp.data);
+      console.log(resp.data);
       return resp.data;
     });
   };

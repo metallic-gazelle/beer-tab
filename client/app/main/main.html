@@ -1,7 +1,7 @@
 
 <div class='container' data-ng-controller="MainCtrl" data-ng-init="getTable()"> 
 
-  <h1> Hello, {{username}}!</h1>
+  <h1> Hello, {{displayname}}!</h1>
   <table ng-table class="table">
       <tr ng-repeat="user in network | orderBy:'username'">
           <td class="username-col" data-title="'Username'">{{user.username}}</td>
