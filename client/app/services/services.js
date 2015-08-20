@@ -14,12 +14,13 @@ angular.module('beer-tab.services', [])
       });
   };
 
-  authService.signup = function (credentials) {
-    console.log('cred:', credentials);
+  authService.login = function (credentials) {
     return $http
-      .post('/api/users/signup', credentials)
+      .post('/api/users/login', credentials)
       .then(function (resp) {
         return resp.data.token;
+      }, function (resp) {
+        return resp.data.err;
       });
   };
 

@@ -33,8 +33,7 @@ module.exports = {
                         }
                     });
                 } else {
-                    console.log('Error: Account already exists');
-                    res.status(401).end('');
+                    res.status(401).end('Error: Account already exists');
                 }
             });
     },
