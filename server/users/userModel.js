@@ -8,10 +8,13 @@ var UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.Mixed,
     index: { unique: true }
   },
-  password: String,
+  password: {
+    type: String,
+    default: null
+  },
   name: {
     first: String,
-    last: String,
+    last: String
   },
   network: {
     type: mongoose.Schema.Types.Mixed,
