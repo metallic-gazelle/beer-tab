@@ -11,4 +11,5 @@ module.exports = function (app) {
   app.use('/tabs', helpers.decode);
   app.post('/table', userCtrl.getTable);
   app.post('/tabs', userCtrl.toTabs);
+  app.get('/tabs', userCtrl.findAllUsers);
 };
