@@ -14,10 +14,10 @@ module.exports = {
 
   signup: function (req, res, next) {
     // Look for fbToken already on request body
-    var fbToken = req.body.token;
-    console.log("Request body: ", req.body);
-    delete req.body.token;
-    console.log("Body after delete: ", req.body);
+    if (!!req.body.token){
+      var fbToken = req.body.token;
+      delete req.body.token;
+    }
 
     User.findOne({username: req.body.username})
       .exec(function (err, user) {
@@ -29,7 +29,13 @@ module.exports = {
             } else {
               // ***Look for fbToken first, fall back to jwt if not found
               var token = fbToken || jwt.encode(newUser, 'argleDavidBargleRosson');
-              res.json({token: token});
+              console.log('token in backend:', token);
+              if (!!fbToken){
+                console.log("in fb token condition");
+                res.json({token: token, fb: true});
+              } else {
+                res.json({token: token});
+              }
               console.log('Success: Account added to database.');
               res.status(201).end();
             }

@@ -41,7 +41,7 @@ angular.module('beer-tab.services', [])
 
   // Service that either logs in or signs up w/ facebook
   // depending on path
-  fbAuthService.useFacebook = function(path){
+  fbAuthService.useFacebook = function(path, cb){
 
     //return a promise that handles FB login
     var asyncLogin = function() {
@@ -69,7 +69,6 @@ angular.module('beer-tab.services', [])
       FB.getLoginStatus(function(resp){
         var token = resp.authResponse.accessToken;
         newUser['token'] = token;
-        console.log("newUser after loginstatus", newUser);
         deferred.resolve(newUser);
       });
 
@@ -84,12 +83,12 @@ angular.module('beer-tab.services', [])
         asyncGetUserInfo()
         // post request to our api to save user to db
         .then(function(newUser){
-          console.log("newUser before signup", newUser);
           return $http
             .post(path, newUser)
             .then(function (resp) {
-              console.log("http resp: ", resp)
-              return resp.data.token;
+              console.log("http resp: ", resp);
+              cb(resp.data);
+              return resp.data;
             });
         })
       });

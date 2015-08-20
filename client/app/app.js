@@ -29,9 +29,11 @@ app.factory('AttachTokens', function ($window) {
   // its job is to stop all out going request
   // then look in local storage and find the user's token
   // then add it to the header so the server can validate the request
+  console.log("Trying to Attach Tokens");
   var attach = {
     request: function (object) {
       var jwt = $window.localStorage.getItem('com.beer-tab');
+      console.log("JWT", jwt);
       if (jwt) {
         object.headers['x-access-token'] = jwt;
       }
@@ -59,7 +61,6 @@ app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
   };
     // Load Facebook JS SDK
     (function(d, s, id) {
-      console.log("Loading FB SDK");
       var js, fjs = d.getElementsByTagName(s)[0];
       if (d.getElementById(id)) return;
       js = d.createElement(s); js.id = id;

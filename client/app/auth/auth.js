@@ -45,7 +45,9 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   $scope.fbLogIn = function() {
     var waitForLogin = function() {
       var deferred = $q.defer();
-      fbAuthService.useFacebook('/api/users/login');
+      fbAuthService.useFacebook('/api/users/login', function(resp){
+        deferred.resolve(resp);
+      });
       return deferred.promise;
     };
     waitForLogin()
@@ -58,14 +60,17 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   $scope.fbSignUp = function() {
     var waitForSignup = function() {
       var deferred = $q.defer();
-      fbAuthService.useFacebook('/api/users/signup');
+      fbAuthService.useFacebook('/api/users/signup', function(resp){
+        deferred.resolve(resp);
+      });
       return deferred.promise;
     };
     waitForSignup()
-      .then(function(token){
-        $window.localStorage.setItem('com.beer-tab', token);
+      .then(function (resp){
+        console.log("Response from backend: ", resp);
+        $window.localStorage.setItem('com.beer-tab', resp);
         $location.path('/main');
-      })
+      });
   };
 
   $scope.fbLogOut = function(){

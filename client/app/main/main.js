@@ -5,6 +5,7 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // Retrieve token from localStorage
   $scope.jwt = $window.localStorage.getItem('com.beer-tab');
   // Decode token (this uses angular-jwt. notice jwtHelper)
+  // if ($scope.jwt.hasOwnProperty('fb'))
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
   // Object used to contain user's beer network
   
