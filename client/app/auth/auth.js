@@ -40,7 +40,21 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     $location.path('/' + path);
   };
 
+  //FACEBOOK AUTHENTICATION
+  $scope.fbLogIn = function() {
+
+  };
+
+  $scope.fbSignUp = function() {
+
+  };
+
+  $scope.fbLogOut = function(){
+
+  };
+
 })
+
 .directive('checkRequired', function () {
   return {
     require: 'ngModel',
@@ -78,3 +92,17 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
         }
     };
 }]);
+  //FACEBOOK AUTHENTICATION
+  $scope.fbLogIn = function() {
+
+  };
+
+  $scope.fbSignUp = function() {
+
+  };
+
+  $scope.fbLogOut = function(){
+
+  };
+
+});
