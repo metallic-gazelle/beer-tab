@@ -2,11 +2,11 @@ var main = angular.module('beer-tab.main', ['beer-tab.services', 'angular-jwt', 
 
 
 main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthService, getTable, util) {
-  // Retrieve Native Token from Local Storage
+  // Attempt To Retrieve Native Token from Local Storage
   $scope.jwt = $window.localStorage.getItem('com.beer-tab');
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
   
-  // Retrieve FB Token from Local Storage
+  // Attempt To Retrieve FB Token from Local Storage
   $scope.fb = $window.localStorage.getItem('com.beer-tab-fb');
   $scope.fb = JSON.parse($scope.fb); 
 
@@ -17,9 +17,9 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
         $scope.network = util.toArr(derp);
         console.log(derp);
       });
-    };
+  };
 
-  // Pull username from token to display on main page
+  // Pull username from found token to display on main page
   if (!!$scope.fb){
     $scope.displayname = $scope.fb.displayname;
     $scope.username = $scope.fb.username;

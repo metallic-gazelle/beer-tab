@@ -25,10 +25,8 @@ app.config(function ($stateProvider, $httpProvider, $urlRouterProvider) {
 });
 
 app.factory('AttachTokens', function ($window) {
-  // this is an $httpInterceptor
-  // its job is to stop all out going request
-  // then look in local storage and find the user's token
-  // then add it to the header so the server can validate the request
+  // $http interceptor looks for either type of token and attaches
+  // the kind found to the request headers
   var attach = {
     request: function (object) {
       var jwt = $window.localStorage.getItem('com.beer-tab');
@@ -48,8 +46,7 @@ app.factory('AttachTokens', function ($window) {
 // RUN service that authenticates all changes to url path
 app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
 
-  $rootScope.user = {};
-  // Initialize Facebook JS SDK
+  // Initialize Facebook JS SDK (Will be called once loaded below)
   $window.fbAsyncInit = function() {
     FB.init({
       appId      : '111911505825360',

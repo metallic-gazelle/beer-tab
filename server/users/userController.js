@@ -13,11 +13,13 @@ module.exports = {
     },
 
   signup: function (req, res, next) {
-    // Look for fbToken already on request body
+    // Look for fbToken already on request body, store reference if
+    // it exists and delete before passing request body to be saved to dB
     if (!!req.body.token){
       var fbToken = req.body.token;
       delete req.body.token;
     }
+    // Define displayname and username for attaching to returned FB token obj
     var displayname = req.body.name['first'];
     var username = req.body.username;
 
@@ -31,9 +33,7 @@ module.exports = {
             } else {
               // ***Look for fbToken first, fall back to jwt if not found
               var token = fbToken || jwt.encode(newUser, 'argleDavidBargleRosson');
-              console.log('token in backend:', token);
               if (!!fbToken){
-                console.log("in fb token condition");
                 res.json({token: token, fb: true, username: username, displayname: displayname});
               } else {
                 res.json({token: token});
@@ -50,7 +50,6 @@ module.exports = {
   },
 
   login: function (req, res, next) {
-    console.log("Request body: ", req.body);
     var username = req.body.username;
     var password = req.body.password;
 
@@ -60,6 +59,7 @@ module.exports = {
       delete req.body.token;
     }
 
+    // If FB token is present, don't try to validate password
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
@@ -132,7 +132,7 @@ module.exports = {
         //Here we distribute the data we received from the request
         var receiver = req.body.user;
         //since we got a token we need to decode it first
-        var decoded = jwt.decode(req.body.token, 'argleDavidBargleRosson');
+        var decoded = JSON.parse(req.body.token) || jwt.decode(req.body.token, 'argleDavidBargleRosson');
         var sender = decoded.username;
         //we need a temporal variable to use the update method on the db.
         var temp;
