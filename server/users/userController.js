@@ -14,7 +14,6 @@ module.exports = {
 
 
     signup: function(req, res, next) {
-
         User.findOne({
                 username: req.body.username
             })
@@ -43,55 +42,27 @@ module.exports = {
         var username = req.body.username;
         var password = req.body.password;
 
-        if (!username || !password) {
-            res.status(401).end('Email and password required to login.');
-        }
 
-        User.findOne({
-                username: username
-            })
-            .exec(function(err, user) {
-                if (!user) {
-                    res.status(401).end('Username not found.');
-                } else {
-                    user.comparePassword(password, user.password, function(err, match) {
-                        if (err) {
-                            res.status(err.status).end('Unable to login. Please try again.');
-                        }
-                        if (match) {
-                            var token = jwt.encode(user, 'argleDavidBargleRosson');
-                            res.json({
-                                token: token
-                            });
-                            res.status(200).end();
-                        } else {
-                            res.status(401).end('Incorrect password. Try again.');
-                        }
-                    });
+        User.findOne({ username: username })
+          .exec(function (err, user) {
+            if (!user) {
+              res.status(401).end('Username not found.');
+            } else {
+              user.comparePassword(password, user.password, function (err, match) {
+                if (err) {
+                  res.status(err.status).end('Unable to login. Please try again.');
                 }
-            });
+                if (match) {
+                  var token = jwt.encode(user, 'argleDavidBargleRosson');
+                  res.json({token: token});
+                  res.status(200).end();
+                } else {
+                  res.status(401).end('Incorrect password. Try again.');
+                }
+              });
+            }
+          });
     },
-
-    // DON'T THINK THIS IS NEEDED...decode in helpers.js can check for token as middleware
-    // checkAuth: function (req, res, next) {
-    //   // checking to see if the user is authenticated
-    //   // grab the token in the head if any then decode the token which we assign to the user object
-    //   // check to see if that user exists in the database
-    //   var token = req.headers['x-access-token'];
-    //   if (!token) {
-    //     next(new Error('No token'));
-    //   } else {
-    //     var user = jwt.decode(token, 'argleDavidBargleRosson');
-    //     User.findOne({username: user.username})
-    //       .exec(function (err, user) {
-    //         if (!user) {
-    //           res.send(401);
-    //         } else {
-    //           res.send(200);
-    //         }
-    //       });
-    //   }
-    // },
 
     getTable: function(req, res) {
         //Here we distribute the data we received from the request
