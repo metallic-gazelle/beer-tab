@@ -92,17 +92,3 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
         }
     };
 }]);
-  //FACEBOOK AUTHENTICATION
-  $scope.fbLogIn = function() {
-
-  };
-
-  $scope.fbSignUp = function() {
-
-  };
-
-  $scope.fbLogOut = function(){
-
-  };
-
-});
