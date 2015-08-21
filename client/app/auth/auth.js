@@ -121,4 +121,3 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     }
   };
 }]);
-
