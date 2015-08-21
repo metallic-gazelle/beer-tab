@@ -47,36 +47,47 @@ angular.module('beer-tab.services', [])
 
   };
 
-  fbAuthService.watchLoginStatus = function(){
-    var _self = this;
+  fbAuthService.checkLoginStatus = function(){
+    FB.getLoginStatus(function(res){
+      handleLoginStatus(res);
+    });
+  };
 
-    FB.Event.subscribe('auth.authResponseChange', function(res){
-      if (res.status === 'connected'){
-        console.log("User logged into app and facebook");
-        _self.getUserInfo();
+  fbAuthService.handleLoginStatus = function(res){
+    // var _self = this;
 
-      } else if (res.status === 'not_authorized'){
-        console.log("User logged into facebook, but not app");
+    if (res.status === 'connected'){
+      console.log("User logged into app and facebook");
+      getUserInfo();
 
-      } else {
-        console.log("User not logged in");
-      }
-    })
+    } else if (res.status === 'not_authorized'){
+      console.log("User logged into facebook, but not app");
+
+    } else {
+      console.log("User not logged in");
+    }
 
   };
 
   fbAuthService.getUserInfo = function() {
-    var _self = this;
+    // var _self = this;
 
     FB.api('/me', function(res) {
-      $rootScope.$apply(function() { 
-        $rootScope.user = _self.user = res; 
+      $rootScope.$apply(function() {
+        console.log("Successful Login: " + res)
+        $rootScope.user = res; 
       });
     });
   };
 
   fbAuthService.logout = function(){
+    var _self = this;
 
+    FB.logout(function(response) {
+      $rootScope.$apply(function() { 
+        $rootScope.user = _self.user = {}; 
+      }); 
+    });
   };
 
   return fbAuthService;

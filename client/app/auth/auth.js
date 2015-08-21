@@ -1,12 +1,13 @@
 var auth = angular.module('beer-tab.auth', []);
 
-auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService) {
-
+auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService) {
+  
   $scope.loginError = false;
   $scope.loginErrorMessage = '';
-
+  
   $scope.user = {};
   $scope.logIn = function () {
+    console.log("In legacy logIn");
     $window.username = $scope.user.username;
     AuthService.login($scope.user)
       .then(function (token) {
@@ -42,7 +43,11 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
 
   //FACEBOOK AUTHENTICATION
   $scope.fbLogIn = function() {
-
+    console.log("in FB login");
+    FB.login(function(res){
+      fbAuthService.handleLoginStatus(res);
+    })
+    fbAuthService.checkLoginStatus();
   };
 
   $scope.fbSignUp = function() {
