@@ -109,6 +109,7 @@ angular.module('beer-tab.services', [])
 })
 
 .factory('getTable', function ($window, $http) {
+
   var getTable = function (username) {
     return $http({
       method: 'POST',
