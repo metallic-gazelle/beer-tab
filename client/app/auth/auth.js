@@ -1,6 +1,6 @@
 var auth = angular.module('beer-tab.auth', []);
 
-auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService) {
+auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService, $q) {
   
   $scope.loginError = false;
   $scope.loginErrorMessage = '';
@@ -43,11 +43,29 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   
   // FACEBOOK AUTHENTICATION
   $scope.fbLogIn = function() {
-    fbAuthService.login()
+    var waitForLogin = function() {
+      var deferred = $q.defer();
+      fbAuthService.useFacebook('/api/users/login');
+      return deferred.promise;
+    };
+    waitForLogin()
+      .then(function(token){
+        $window.localStorage.setItem('com.beer-tab', token);
+        $location.path('/main');
+      })
   };
 
   $scope.fbSignUp = function() {
-    fbAuthService.signup();
+    var waitForSignup = function() {
+      var deferred = $q.defer();
+      fbAuthService.useFacebook('/api/users/signup');
+      return deferred.promise;
+    };
+    waitForSignup()
+      .then(function(token){
+        $window.localStorage.setItem('com.beer-tab', token);
+        $location.path('/main');
+      })
   };
 
   $scope.fbLogOut = function(){

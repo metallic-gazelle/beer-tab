@@ -5,7 +5,7 @@ var Bluebird = require('bluebird'),
 // Define user schema
 var UserSchema = new mongoose.Schema({
   username: {
-    type: String,
+    type: mongoose.Schema.Types.Mixed,
     index: { unique: true }
   },
   password: String,

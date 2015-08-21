@@ -15,6 +15,9 @@ module.exports = {
   signup: function (req, res, next) {
     // Look for fbToken already on request body
     var fbToken = req.body.token;
+    console.log("Request body: ", req.body);
+    delete req.body.token;
+    console.log("Body after delete: ", req.body);
 
     User.findOne({username: req.body.username})
       .exec(function (err, user) {
@@ -39,6 +42,7 @@ module.exports = {
   },
 
   login: function (req, res, next) {
+    console.log("Request body: ", req.body);
     var username = req.body.username;
     var password = req.body.password;
     var fbToken  = req.body.token;
