@@ -21,7 +21,6 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   // $scope.network =  argle || $scope.decodedJwt.network;
   // Pull username from token to display on main page
   $scope.username = $scope.decodedJwt.username;
-  /*console.log('$scope.username', $scope.username);*/
 
 
   //this is used to show the add friend button, and hide the
