@@ -54,7 +54,8 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     }
   };
 })
-.directive('passwordMatch', function () {
+
+.directive('passwordMatch', [function () {
   return {
     restrict: 'A',
     scope: true,
@@ -76,4 +77,5 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       });
     }
   };
-});
+}]);
+

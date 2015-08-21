@@ -9,9 +9,9 @@ angular.module('beer-tab.services', [])
       .then(function (resp) {
         return resp.data.token;
       })
-      .catch(function(err){
-        throw err;
-      })
+      .catch(function (error) {
+        throw error;
+      });
   };
 
   authService.signup = function (credentials) {
