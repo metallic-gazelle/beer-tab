@@ -24,10 +24,10 @@ var UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Drink'
   }],
-  network: {
-    type: mongoose.Schema.Types.Mixed,
-    default: {}
-  }
+  network: [{ //array of friends
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 });
 
 UserSchema.methods.comparePassword = function (attemptedPassword, savedPassword, callback) {

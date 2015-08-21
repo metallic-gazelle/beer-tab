@@ -113,7 +113,7 @@ angular.module('beer-tab.services', [])
 
   var getTable = function (username) {
     return $http({
-      method: 'POST',
+      method: 'GET',
       url: '/api/users/table',
       data: {username: username}
     })
@@ -149,12 +149,23 @@ angular.module('beer-tab.services', [])
       url: 'api/users/tabs'
     })
     .then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };
+  var addToNetwork = function(user){
+    return $http({
+      method: 'POST',
+      url: '/api/users/tabs',
+      data: {token: $window.localStorage.getItem('com.beer-tab'), _id: user._id}
+    })
+      .then(function (resp) {
+        console.log(resp.data);
+          return resp.data;
+    });
+  }
 
   return {
+    addToNetwork:addToNetwork,
     newIOU: newIOU,
     findUsers: findUsers
   };

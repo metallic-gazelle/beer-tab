@@ -1,5 +1,5 @@
 var drinkCtrl = require('./drinkController'),
-  helpers = require('./helpers');
+  helpers = require('../config/helpers');
 
 module.exports = function (app) {
   // app is the drinkRouter is injected from middleware.js
