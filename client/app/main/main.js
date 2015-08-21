@@ -8,6 +8,46 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
   // Object used to contain user's beer network
 
+  $scope.drinksSelect = {
+    cocktail:   false,
+    martini:    false,
+    beer:       false,
+    wine:       false,
+    shot:       false
+  };
+
+  $scope.initializeBar = function () {
+    $scope.drinksSelect = {
+      cocktail:   false,
+      martini:    false,
+      beer:       false,
+      wine:       false,
+      shot:       false
+    };
+  };
+
+  $scope.getDrinkClass = function (drink) {
+    return ($scope.drinksSelect[drink]) ? drink + 'clicked' : '';
+  };
+
+  $scope.changeDrinkClass = function (drink) {
+    // if the drink is
+    if ($scope.drinksSelect[drink]) {
+      $scope.drinksSelect[drink] = false;
+    } else {
+      $scope.initializeBar();
+      $scope.drinksSelect[drink] = true;
+    }
+  };
+
+  $scope.getSelectedDrink = function () {
+
+    for (var drink in $scope.drinksSelect) {
+      if ($scope.drinksSelect[drink]) {
+        return drink;
+      }
+    }
+  };
 
   $scope.getTable = function () {
     getTable.getTable($scope.username)
