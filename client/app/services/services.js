@@ -104,30 +104,8 @@ angular.module('beer-tab.services', [])
             return resp.data.token;
           });
       })
+
   };
-
-  // fbAuthService.handleLoginStatus = function(res){
-
-  //   if (res.status === 'connected'){
-  //     console.log("User logged into app and facebook");
-  //     fbAuthService.getUserInfo();
-  //   } else {
-  //     console.log("User not logged in");
-  //   }
-
-  // };
-
-  // fbAuthService.getUserInfo = function() {
-  //   var _self = this;
-
-  //   FB.api('/me', function(res) {
-  //     // $rootScope.$apply(function() {
-  //       console.log("Successful Login: " + res);
-  //       $rootScope.user = res; 
-  //       console.log("rootScope: " + $rootScope);
-  //     // });
-  //   });
-  // };
 
   fbAuthService.logout = function(){
     var _self = this;
