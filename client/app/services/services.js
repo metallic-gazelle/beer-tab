@@ -111,7 +111,7 @@ angular.module('beer-tab.services', [])
 
     if (res.status === 'connected'){
       console.log("User logged into app and facebook");
-      getUserInfo();
+      fbAuthService.getUserInfo();
     } else {
       console.log("User not logged in");
     }
