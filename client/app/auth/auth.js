@@ -51,8 +51,9 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       return deferred.promise;
     };
     waitForLogin()
-      .then(function(token){
-        $window.localStorage.setItem('com.beer-tab', token);
+      .then(function (token){
+        console.log("Response from backend: ", token);
+        $window.localStorage.setItem('com.beer-tab', JSON.stringify(token));
         $location.path('/main');
       })
   };
@@ -66,9 +67,9 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       return deferred.promise;
     };
     waitForSignup()
-      .then(function (resp){
-        console.log("Response from backend: ", resp);
-        $window.localStorage.setItem('com.beer-tab', resp);
+      .then(function (token){
+        console.log("Response from backend: ", token);
+        $window.localStorage.setItem('com.beer-tab', JSON.stringify(token));
         $location.path('/main');
       });
   };

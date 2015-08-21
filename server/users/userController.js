@@ -18,6 +18,8 @@ module.exports = {
       var fbToken = req.body.token;
       delete req.body.token;
     }
+    var displayname = req.body.name['first'];
+    var username = req.body.username;
 
     User.findOne({username: req.body.username})
       .exec(function (err, user) {
@@ -32,7 +34,7 @@ module.exports = {
               console.log('token in backend:', token);
               if (!!fbToken){
                 console.log("in fb token condition");
-                res.json({token: token, fb: true});
+                res.json({token: token, fb: true, username: username, displayname: displayname});
               } else {
                 res.json({token: token});
               }
@@ -51,17 +53,25 @@ module.exports = {
     console.log("Request body: ", req.body);
     var username = req.body.username;
     var password = req.body.password;
-    var fbToken  = req.body.token;
+
+    if (!!req.body.token){
+      var fbToken = req.body.token;
+      var displayname = req.body.name['first'];
+      delete req.body.token;
+    }
 
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
           res.status(418).end();
+        } else if (!!fbToken) {
+          res.json({token: fbToken, fb: true, username: username, displayname: displayname});
+          console.log("Logged In With Facebook");
+          res.status(201).end();
         } else {
           user.comparePassword(password, user.password, function (err, match) {
             if (match) {
-              // ***Look for fbToken first, fall back to jwt if not found
-              var token = fbToken || jwt.encode(user, 'argleDavidBargleRosson');
+              var token = jwt.encode(user, 'argleDavidBargleRosson');
               res.json({token: token});
               console.log('Success: Logged in');
               res.status(201).end();

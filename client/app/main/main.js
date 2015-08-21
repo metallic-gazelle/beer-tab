@@ -4,9 +4,14 @@ var main = angular.module('beer-tab.main', ['beer-tab.services', 'angular-jwt', 
 main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthService, getTable, util) {
   // Retrieve token from localStorage
   $scope.jwt = $window.localStorage.getItem('com.beer-tab');
+  var tempToken = JSON.parse($scope.jwt);
+  console.log("tempToken", tempToken);
   // Decode token (this uses angular-jwt. notice jwtHelper)
-  // if ($scope.jwt.hasOwnProperty('fb'))
   $scope.decodedJwt = $scope.jwt && jwtHelper.decodeToken($scope.jwt);
+  if (!!tempToken.hasOwnProperty('fb')){
+    console.log("Has fbToken");
+    $scope.decodedJwt = tempToken;
+  }
   // Object used to contain user's beer network
   
 
