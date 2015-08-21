@@ -11,8 +11,8 @@
             </span>
           </td>
           <td class="pay-btn-col"> 
-            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username)">Got Beer</button>
-            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username)">Send Beer</button>
+            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username, drink.type, dollarAmount)">Got Beer</button>
+            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username, drink.type, dollarAmount)">Send Beer</button>
          </td>
       </tr>
   </table>
@@ -23,8 +23,8 @@
     <form ng-submit="sendBeer(toUser)" name="send-beer" novalidate>
       <ul class="ul-list" ng-show="clicked">
         <li class='center'>
-           <ui-select ng-model='result.selected' on-select='sendBeer(result.selected.username); toggle()'  theme="bootstrap" ng-disabled="false" reset-search-input="false" uiSelectConfig.appendToBody = true; style="width: 300px;">
-              <ui-select-match id='ui-select-container' placeholder="I owe a beer to...">{{$select.selected.name}}</ui-select-match>
+           <ui-select ng-model='result.selected' on-select='sendBeer(result.selected.username); toggle(); clearField(); $select.selected=null'  theme="bootstrap" ng-disabled="false" reset-search-input="false" uiSelectConfig.appendToBody = true; style="width: 300px;">
+              <ui-select-match class='ui-select-container ' placeholder="I owe a beer to...">{{$select.selected.name}}</ui-select-match>
               <ui-select-choices repeat='user in results|limitTo:10' refresh='findUser($select.search)' refresh-delay='0'>
                 <div ng-bind-html='user.name | highlight: $select.search'></div>
               </ui-select-choices>

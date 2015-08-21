@@ -54,11 +54,11 @@ angular.module('beer-tab.services', [])
 })
 
 .factory('beerPmt', function ($window, $http) {
-  var newIOU = function (user) {
+  var newIOU = function (user, drink, cost) {
     return $http({
       method: 'POST',
-      url: '/api/users/tabs',
-      data: {token: $window.localStorage.getItem('com.beer-tab'), user: user}
+      url: '/api/drinks/give',
+      data: {user: user, drink: drink, cost:cost}
     })
     .then(function (resp) {
       return resp.data;

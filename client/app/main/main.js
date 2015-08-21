@@ -27,17 +27,18 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   //this is used to show the add friend button, and hide the
   // new friend form
   $scope.clicked = false;
+  $scope.menuTabStatus = false;
   /*$scope.network = [];*/
   
   //This function sends a request to the server, it returns 
   //the updated information
-  $scope.sendBeer = function (user) {
+  $scope.sendBeer = function (user, drink, cost) {
     
     if(user){
       console.log('sendBeer called', user);
       
       if(AuthService.isAuth()) {
-        beerPmt.newIOU(user)
+        beerPmt.newIOU(user, drink, cost)
         .then(function(derp){
           console.log(derp); 
           $scope.network = util.toArr(derp.network);
@@ -68,10 +69,17 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
         }
     };
     $scope.clearField = function() {
-        $scope.toUser = '';
+      console.log('THIS IS THE INPUT NAME', $scope.$select)
         $scope.results = [];
 
     };
+    $scope.toggleMenu = function(){
+      if($scope.menuTabStatus === false){
+        $scope.menuTabStatus = true;
+      }else{
+        $scope.menuTabStatus = false;        
+      }
+    }
 });
 
 main.filter('range', function() {
