@@ -43,7 +43,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
 
   //FACEBOOK AUTHENTICATION
   $scope.fbLogIn = function() {
-    fbAuthService.login();
+    fbAuthService.login()
   };
 
   $scope.fbSignUp = function() {

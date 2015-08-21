@@ -36,49 +36,76 @@ angular.module('beer-tab.services', [])
 })
 
 // Factory to handle FB authentication
-.factory('fbAuthService', function ($rootScope, $http, $location, $window) {
+.factory('fbAuthService', function ($rootScope, $q, $http, $location, $window) {
   var fbAuthService = {};
 
-  fbAuthService.login = function(credentials){
-    FB.login(function(res){
-      console.log(res.authResponse);
-    })
-    fbAuthService.checkLoginStatus();
+  fbAuthService.login = function(){
+    //return a promise that handles FB login
+    var asyncLogin = function() {
+      var deferred = $q.defer();
+
+      FB.login(function(res){
+        deferred.resolve(res);
+      }, {scope: 'public_profile,email'});
+
+      return deferred.promise;
+    };
+
+    // login async
+    asyncLogin();
+    
   };
 
-  fbAuthService.signup = function(credentials){
+  fbAuthService.signup = function(){
+
+    // user object that will be populated by
+    // facebook login
+    var newUser = {username: null, name:{}, token: null};
+
+    //return a promise that handles FB login
+    var asyncLogin = function() {
+      var deferred = $q.defer();
+
+      FB.login(function(res){
+        deferred.resolve(res);
+      }, {scope: 'public_profile,email'});
+
+      return deferred.promise;
+    };
+
+    // login async
+    asyncLogin()
+      // query FB api -->
+        // userId will be used as username
+        // split name to get First & Last
+      .then(function(){
+        FB.api('/me', function(resp){
+          newUser['username'] = resp.id;
+          var full_name = resp.name;
+          var split = full_name.split(" ");
+          newUser['name']['first'] = split[0];
+          newUser['name']['last']  = split[split.length-1];
+        });
+      })
+      // getLoginStatus provides access to token,
+      // attach to newUser object as well
+      .then(function(){
+        FB.getLoginStatus(function(resp){
+          var token = resp.authResponse.accessToken;
+          newUser['token'] = token;
+          console.log(newUser);
+        })
+      })
+      // post request to our api to save user to db
+      .then(function(){
+        return $http
+          .post('/api/users/signup', newUser)
+          .then(function (resp) {
+            return resp.data.token;
+          });
+      })
 
   };
-
-  fbAuthService.checkLoginStatus = function(){
-    FB.getLoginStatus(function(res){
-      console.log("Token: " + res.authResponse.accessToken);
-      return !!res.authResponse.accessToken;
-    });
-  };
-
-  // fbAuthService.handleLoginStatus = function(res){
-
-  //   if (res.status === 'connected'){
-  //     console.log("User logged into app and facebook");
-  //     fbAuthService.getUserInfo();
-  //   } else {
-  //     console.log("User not logged in");
-  //   }
-
-  // };
-
-  // fbAuthService.getUserInfo = function() {
-  //   var _self = this;
-
-  //   FB.api('/me', function(res) {
-  //     // $rootScope.$apply(function() {
-  //       console.log("Successful Login: " + res);
-  //       $rootScope.user = res; 
-  //       console.log("rootScope: " + $rootScope);
-  //     // });
-  //   });
-  // };
 
   fbAuthService.logout = function(){
     var _self = this;

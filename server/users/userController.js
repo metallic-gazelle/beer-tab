@@ -12,40 +12,36 @@ module.exports = {
         });
     },
 
+  signup: function (req, res, next) {
+    // Look for fbToken already on request body
+    var fbToken = req.body.token;
 
-    signup: function(req, res, next) {
-
-        User.findOne({
-                username: req.body.username
-            })
-            .exec(function(err, user) {
-                if (!user) {
-                    var newUser = new User(req.body);
-                    newUser.save(function(err, newUser) {
-                        if (err) {
-                            next(err);
-                        } else {
-                            var token = jwt.encode(newUser, 'argleDavidBargleRosson');
-                            res.json({
-                                token: token
-                            });
-                            console.log('Success: Account added to database.');
-                            res.status(201).end();
-                        }
-                    });
-                } else {
-                    res.status(401).end('Error: Account already exists');
-                }
-            });
-    },
-
-    login: function(req, res, next) {
-        var username = req.body.username;
-        var password = req.body.password;
-
-        if (!username || !password) {
-            res.status(401).end('Email and password required to login.');
+    User.findOne({username: req.body.username})
+      .exec(function (err, user) {
+        if (!user) {
+          var newUser = new User(req.body);
+          newUser.save(function (err, newUser) {
+            if (err) {
+              next(err);
+            } else {
+              // ***Look for fbToken first, fall back to jwt if not found
+              var token = fbToken || jwt.encode(newUser, 'argleDavidBargleRosson');
+              res.json({token: token});
+              console.log('Success: Account added to database.');
+              res.status(201).end();
+            }
+          });
+        } else {
+          console.log('Error: Account already exists');
+          res.status(418).end();
         }
+      });
+  },
+
+  login: function (req, res, next) {
+    var username = req.body.username;
+    var password = req.body.password;
+    var fbToken  = req.body.token;
 
         User.findOne({
                 username: username
