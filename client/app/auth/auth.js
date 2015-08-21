@@ -56,7 +56,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
         console.log("Response from backend: ", token);
         $window.localStorage.setItem('com.beer-tab-fb', JSON.stringify(token));
         $location.path('/main');
-      })
+      });
   };
 
   $scope.fbSignUp = function() {
@@ -98,7 +98,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   };
 })
 
-.directive('passwordMatch', [function () {
+.directive('passwordMatch', function () {
   return {
     restrict: 'A',
     scope: true,
@@ -120,4 +120,4 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       });
     }
   };
-}]);
+});
