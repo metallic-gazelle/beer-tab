@@ -6,6 +6,7 @@ var morgan      = require('morgan'), // used for logging incoming request
 module.exports = function (app, express) {
   // Express 4 allows us to use multiple routers with their own configurations
   var userRouter = express.Router();
+  var drinkRouter = express.Router();
 
   app.use(morgan('dev'));
   app.use(bodyParser.urlencoded({extended: true}));
@@ -27,6 +28,7 @@ module.exports = function (app, express) {
   // ------- END OLD CODE ------- //
 
   app.use('/api/users', userRouter); // use user router for all user requests
+  app.use('/api/drinks', drinkRouter); // user drink router for all drink requests
 
   // authentication middleware used to decode token and made available on the request
   app.use(helpers.errorLogger);
@@ -34,4 +36,5 @@ module.exports = function (app, express) {
 
   // inject our routers into their respective route files
   require('../users/userRoutes')(userRouter);
+  require('../drinks/drinkRoutes')(drinkRouter);
 };
