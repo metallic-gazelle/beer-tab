@@ -109,7 +109,12 @@ module.exports = {
         //Here we distribute the data we received from the request
         var receiver = req.body.user;
         //since we got a token we need to decode it first
-        var decoded = JSON.parse(req.body.token) || jwt.decode(req.body.token, 'argleDavidBargleRosson');
+        var decoded;
+        try {
+          decoded = JSON.parse(req.body.token);
+        } catch (error) {
+          decoded = jwt.decode(req.body.token, 'argleDavidBargleRosson');
+        }
         var sender = decoded.username;
         //we need a temporal variable to use the update method on the db.
         var temp;
