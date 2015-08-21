@@ -83,7 +83,7 @@ angular.module('beer-tab.services', [])
 
 
   fbAuthService.getUserInfo = function() {
-    // var _self = this;
+    var _self = this;
 
     FB.api('/me', function(res) {
       $rootScope.$apply(function() {
