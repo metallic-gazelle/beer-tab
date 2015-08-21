@@ -9,8 +9,8 @@ angular.module('beer-tab.services', [])
       .then(function (resp) {
         return resp.data.token;
       })
-      .catch(function (err) {
-        throw err;
+      .catch(function (error) {
+        throw error;
       });
   };
 
@@ -60,16 +60,6 @@ angular.module('beer-tab.services', [])
       data: {token: $window.localStorage.getItem('com.beer-tab'), user: user}
     })
     .then(function (resp) {
-      return resp.data;
-    });
-  };
-  var findUsers = function () {
-    return $http({
-      method: 'GET',
-      url: 'api/users/tabs'
-    })
-    .then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };

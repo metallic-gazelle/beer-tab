@@ -47,6 +47,7 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
         return drink;
       }
     }
+
   };
 
   $scope.getTable = function () {
