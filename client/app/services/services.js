@@ -129,14 +129,14 @@ angular.module('beer-tab.services', [])
 })
 
 .factory('beerPmt', function ($window, $http) {
-  var newIOU = function (user) {
+  var newIOU = function (user, drink, cost) {
     var token = $window.localStorage.getItem('com.beer-tab-fb') || $window.localStorage.getItem('com.beer-tab');
     // token = JSON.parse(token);
     console.log("token in IOU", token);
     return $http({
       method: 'POST',
-      url: '/api/users/tabs',
-      data: {token: token, user: user}
+      url: '/api/drinks/give',
+      data: {username: user, drink: drink, cost:cost}
     })
     .then(function (resp) {
       return resp.data;

@@ -78,13 +78,13 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
 
   //This function sends a request to the server, it returns
   //the updated information
-  $scope.sendBeer = function (user) {
-
+  $scope.sendBeer = function (user, drink, cost) {
+    cost = parseInt(cost)
     if (user) {
       console.log('sendBeer called', user);
 
       if (AuthService.isAuth()) {
-        beerPmt.newIOU(user)
+        beerPmt.newIOU(user, drink, cost)
         .then(function (derp) {
           $scope.network = util.toArr(derp.network);
 

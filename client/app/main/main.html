@@ -9,7 +9,7 @@
         <span ng-class="getDrinkClass('beer')" ng-click="changeDrinkClass('beer')" class="beer glyph-icon flaticon-drink24 shake"></span>
         <span ng-class="getDrinkClass('wine')" ng-click="changeDrinkClass('wine')" class="wine glyph-icon flaticon-glass15 shake"></span>
         <span ng-class="getDrinkClass('shot')" ng-click="changeDrinkClass('shot')" class="shot glyph-icon flaticon-water42 shake"></span>
-        <span class="dollarcontainer">$<input type="text" class="dollar"></input></span>
+        <span class="dollarcontainer">$<input type="text" class="dollar" ng-model='cost' required></input></span>
         <!-- <span class="icon"><i class="fa fa-plus fa-3x"></i></span> -->
       </tr>
       <tr ng-repeat="user in network | orderBy:'username'">
@@ -20,8 +20,8 @@
             </span>
           </td>
           <td class="pay-btn-col"> 
-            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username)">Got {{ getSelectedDrink() }}</button>
-            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username)">Send {{ getSelectedDrink() }}</button>
+            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username, getSelectedDrink(), cost)">Got {{ getSelectedDrink() }}</button>
+            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username, getSelectedDrink(), cost)">Send {{ getSelectedDrink() }}</button>
          </td>
       </tr>
   </table>
