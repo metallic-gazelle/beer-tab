@@ -43,8 +43,7 @@ module.exports = {
             }
           });
         } else {
-          console.log('Error: Account already exists');
-          res.status(418).end();
+          res.status(401).end("Error: Account already exists");
         }
       });
   },
@@ -52,7 +51,7 @@ module.exports = {
   login: function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-
+    
     if (!!req.body.token){
       var fbToken = req.body.token;
       var displayname = req.body.name['first'];
@@ -63,7 +62,7 @@ module.exports = {
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
-          res.status(418).end();
+          res.status(401).end("Username Not Found");
         } else if (!!fbToken) {
           res.json({token: fbToken, fb: true, username: username, displayname: displayname});
           console.log("Logged In With Facebook");
@@ -74,11 +73,10 @@ module.exports = {
               var token = jwt.encode(user, 'argleDavidBargleRosson');
               res.json({token: token});
               console.log('Success: Logged in');
-              res.status(201).end();
+              res.status(200).end();
 
             } else {
-              console.log('Error: Incorrect password');
-              res.status(418).end();
+              res.status(401).end("Incorrect Password: Try Again");
             }
           });
         }
