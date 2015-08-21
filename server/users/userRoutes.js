@@ -6,7 +6,6 @@ module.exports = function (app) {
 
   app.post('/login', userCtrl.login);
   app.post('/signup', userCtrl.signup);
-  
   app.use('/table', helpers.decode);
   app.use('/tabs', helpers.decode);
   app.post('/table', userCtrl.getTable);

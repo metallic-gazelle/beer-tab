@@ -3,6 +3,15 @@
 
   <h1> Hello, {{displayname}}!</h1>
   <table ng-table class="table">
+      <tr class="drinkcontainer">
+        <span ng-class="getDrinkClass('cocktail')" ng-click="changeDrinkClass('cocktail')" class="glyph-icon flaticon-cocktail13 shake cocktail"></span>
+        <span ng-class="getDrinkClass('martini')" ng-click="changeDrinkClass('martini')" class="martini glyph-icon flaticon-cocktail17 shake"></span>
+        <span ng-class="getDrinkClass('beer')" ng-click="changeDrinkClass('beer')" class="beer glyph-icon flaticon-drink24 shake"></span>
+        <span ng-class="getDrinkClass('wine')" ng-click="changeDrinkClass('wine')" class="wine glyph-icon flaticon-glass15 shake"></span>
+        <span ng-class="getDrinkClass('shot')" ng-click="changeDrinkClass('shot')" class="shot glyph-icon flaticon-water42 shake"></span>
+        <span class="dollarcontainer">$<input type="text" class="dollar"></input></span>
+        <!-- <span class="icon"><i class="fa fa-plus fa-3x"></i></span> -->
+      </tr>
       <tr ng-repeat="user in network | orderBy:'username'">
           <td class="username-col" data-title="'Username'">{{user.username}}</td>
           <td class="beer-tab-col" data-title="'Tab'">
@@ -11,8 +20,8 @@
             </span>
           </td>
           <td class="pay-btn-col"> 
-            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username)">Got Beer</button>
-            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username)">Send Beer</button>
+            <button class="pay-btn" ng-hide="user.tab <= 0" ng-click="sendBeer(user.username)">Got {{ getSelectedDrink() }}</button>
+            <button class="pay-btn" ng-hide="user.tab > 0" ng-click="sendBeer(user.username)">Send {{ getSelectedDrink() }}</button>
          </td>
       </tr>
   </table>
@@ -30,7 +39,7 @@
               </ui-select-choices>
             </ui=select>
           <!-- <div><input type="text" class="send-beer input" placeholder="I owe a beer to..." ng-model="toUser" ng-minlength="3" ng-maxlength="20" required><span class="icon"><i class="fa fa-user"></i></span></li> -->
-        <li><input type="submit" value="SEND BEER" class="btn btn2" ng-disabled="login.$invalid" disabled="disabled" ng-click="clicked = false;"></li>
+        <li><input type="submit" value="SEND {{ getSelectedDrink().toUpperCase() }}" class="btn btn2" ng-disabled="login.$invalid" disabled="disabled" ng-click="clicked = false;"></li>
       </ul>
     </form>
   </div>
