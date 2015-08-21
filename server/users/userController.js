@@ -4,11 +4,13 @@ var jwt  = require('jwt-simple'),
 module.exports = {
 
   signup: function (req, res, next) {
-    // Look for fbToken already on request body
+    // Look for fbToken already on request body, store reference if
+    // it exists and delete before passing request body to be saved to dB
     if (!!req.body.token){
       var fbToken = req.body.token;
       delete req.body.token;
     }
+    // Define displayname and username for attaching to returned FB token obj
     var displayname = req.body.name['first'];
     var username = req.body.username;
 
@@ -22,9 +24,7 @@ module.exports = {
             } else {
               // ***Look for fbToken first, fall back to jwt if not found
               var token = fbToken || jwt.encode(newUser, 'argleDavidBargleRosson');
-              console.log('token in backend:', token);
               if (!!fbToken){
-                console.log("in fb token condition");
                 res.json({token: token, fb: true, username: username, displayname: displayname});
               } else {
                 res.json({token: token});
@@ -41,7 +41,6 @@ module.exports = {
   },
 
   login: function (req, res, next) {
-    console.log("Request body: ", req.body);
     var username = req.body.username;
     var password = req.body.password;
 
@@ -51,6 +50,7 @@ module.exports = {
       delete req.body.token;
     }
 
+    // If FB token is present, don't try to validate password
     User.findOne({ username: username })
       .exec(function (err, user) {
         if (!user) {
@@ -76,26 +76,6 @@ module.exports = {
       });
   },
 
-  // DON'T THINK THIS IS NEEDED...decode in helpers.js can check for token as middleware
-  // checkAuth: function (req, res, next) {
-  //   // checking to see if the user is authenticated
-  //   // grab the token in the head if any then decode the token which we assign to the user object
-  //   // check to see if that user exists in the database
-  //   var token = req.headers['x-access-token'];
-  //   if (!token) {
-  //     next(new Error('No token'));
-  //   } else {
-  //     var user = jwt.decode(token, 'argleDavidBargleRosson');
-  //     User.findOne({username: user.username})
-  //       .exec(function (err, user) {
-  //         if (!user) {
-  //           res.send(401);
-  //         } else {
-  //           res.send(200);
-  //         }
-  //       });
-  //   }
-  // },
 
   getTable: function (req, res) {
     //Here we distribute the data we received from the request
@@ -119,7 +99,7 @@ module.exports = {
   toTabs: function (req, res) {
     //Here we distribute the data we received from the request
     var receiver = req.body.user;
-    //since we got a token we need to decode it first
+    // Parse FBtoken if present, otherwise decode jwt
     var decoded = JSON.parse(req.body.token) || jwt.decode(req.body.token, 'argleDavidBargleRosson');
     var sender = decoded.username;
     //we need a temporal variable to use the update method on the db.

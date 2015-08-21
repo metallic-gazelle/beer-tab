@@ -29,6 +29,7 @@ angular.module('beer-tab.services', [])
   };
 
   authService.signout = function () {
+    // Remove tokens from local storage, redirect to login, reload page
     $window.localStorage.removeItem('com.beer-tab');
     $window.localStorage.removeItem('com.beer-tab-fb');
     $location.path('/login');
@@ -42,8 +43,7 @@ angular.module('beer-tab.services', [])
 .factory('fbAuthService', function ($rootScope, $q, $http, $location, $window) {
   var fbAuthService = {};
 
-  // Service that either logs in or signs up w/ facebook
-  // depending on path
+  // Service that handles login/signup via facebook
   fbAuthService.useFacebook = function(path, cb){
 
     //return a promise that handles FB login
@@ -62,6 +62,9 @@ angular.module('beer-tab.services', [])
       var deferred = $q.defer();
 
       var newUser = {username: null, name:{}, token: null};
+      // query FB api -->
+        // userId will be used as username
+        // split name to get First & Last
       FB.api('/me', function(resp){
         newUser['username'] = resp.id;
         var full_name = resp.name;
@@ -79,14 +82,11 @@ angular.module('beer-tab.services', [])
     };
     // login async
     asyncLogin()
-      // query FB api -->
-        // userId will be used as username
-        // split name to get First & Last
       .then(function(){
+        // get user info
         asyncGetUserInfo()
         // post request to our api to save user to db
         .then(function(newUser){
-          console.log("Before Post", newUser);
           return $http
             .post(path, newUser)
             .then(function (resp) {
@@ -99,8 +99,8 @@ angular.module('beer-tab.services', [])
 
   };
 
+  // Allow the user to logout of FBook from our site?
   fbAuthService.logout = function(){
-
     FB.logout(function(response) {
       console.log(response);
     });
@@ -112,7 +112,6 @@ angular.module('beer-tab.services', [])
 .factory('getTable', function ($window, $http) {
   
   var getTable = function (username) {
-    console.log("Username in Get Table:", username);
     return $http({
       method: 'POST',
       url: '/api/users/table',

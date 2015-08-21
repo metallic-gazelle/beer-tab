@@ -3,7 +3,6 @@ var auth = angular.module('beer-tab.auth', []);
 auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService, $q) {
   $scope.user = {};
   $scope.logIn = function () {
-    console.log("In legacy logIn");
     $window.username = $scope.user.username;
     AuthService.login($scope.user)
       .then(function (token) {
@@ -37,6 +36,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   
   // FACEBOOK AUTHENTICATION
   $scope.fbLogIn = function() {
+    // Return a promise that waits for login process to complete
     var waitForLogin = function() {
       var deferred = $q.defer();
       fbAuthService.useFacebook('/api/users/login', function(resp){
@@ -45,6 +45,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       return deferred.promise;
     };
     waitForLogin()
+      // After login, store token we get back in localStorage
       .then(function (token){
         console.log("Response from backend: ", token);
         $window.localStorage.setItem('com.beer-tab-fb', JSON.stringify(token));
@@ -53,6 +54,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   };
 
   $scope.fbSignUp = function() {
+    // Return a promise that waits for signup process to complete
     var waitForSignup = function() {
       var deferred = $q.defer();
       fbAuthService.useFacebook('/api/users/signup', function(resp){
@@ -61,6 +63,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       return deferred.promise;
     };
     waitForSignup()
+      // After login, store token we get back in localStorage
       .then(function (token){
         console.log("Response from backend: ", token);
         $window.localStorage.setItem('com.beer-tab-fb', JSON.stringify(token));

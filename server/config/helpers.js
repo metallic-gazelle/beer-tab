@@ -11,12 +11,12 @@ module.exports = {
   },
 
   decode: function (req, res, next) {
-    console.log("IN DECODE");
     var token = req.headers['x-access-token'];
     var user;
     if (!token) {
       return res.status(403); // send forbidden if a token is not provided
     }
+    // Try FBook token first, fall back to jwt otherwise
     try {
       var fbToken = JSON.parse(token);
       user = fbToken.username;
