@@ -113,7 +113,7 @@ angular.module('beer-tab.services', [])
 
   var getTable = function (username) {
     return $http({
-      method: 'POST',
+      method: 'GET',
       url: '/api/users/table',
       data: {username: username}
     })
@@ -129,14 +129,14 @@ angular.module('beer-tab.services', [])
 })
 
 .factory('beerPmt', function ($window, $http) {
-  var newIOU = function (user) {
+  var newIOU = function (user, drink, cost) {
     var token = $window.localStorage.getItem('com.beer-tab-fb') || $window.localStorage.getItem('com.beer-tab');
     // token = JSON.parse(token);
     console.log("token in IOU", token);
     return $http({
       method: 'POST',
-      url: '/api/users/tabs',
-      data: {token: token, user: user}
+      url: '/api/drinks/give',
+      data: {username: user, drink: drink, cost:cost}
     })
     .then(function (resp) {
       return resp.data;
@@ -149,12 +149,23 @@ angular.module('beer-tab.services', [])
       url: 'api/users/tabs'
     })
     .then(function (resp) {
-      console.log(resp.data);
       return resp.data;
     });
   };
+  var addToNetwork = function(user){
+    return $http({
+      method: 'POST',
+      url: '/api/users/tabs',
+      data: {token: $window.localStorage.getItem('com.beer-tab'), _id: user._id}
+    })
+      .then(function (resp) {
+        console.log(resp.data);
+          return resp.data;
+    });
+  }
 
   return {
+    addToNetwork:addToNetwork,
     newIOU: newIOU,
     findUsers: findUsers
   };

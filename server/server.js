@@ -18,7 +18,6 @@ var user1 = new User({
     first: 'Joe',
     last: 'Smith'
   },
-  network: {'stvnwu': -1, 'Vandres': 2, 'mKurrel': 0, 'dRosson': 3}
 });
 
 var user2 = new User({
@@ -28,7 +27,6 @@ var user2 = new User({
     first: 'Steven',
     last: 'Wu'
   },
-  network: {'iemanatemire': 1, 'Vandres': 0, 'mKurrel': 2, 'dRosson': -3}
 });
 
 var user3 = new User({
@@ -38,7 +36,6 @@ var user3 = new User({
     first: 'Andres',
     last: 'V.'
   },
-  network: {'stvnwu': 0, 'iemanatemire': -2, 'mKurrel': 1, 'dRosson': 0}
 });
 
 var user4 = new User({
@@ -48,7 +45,6 @@ var user4 = new User({
     first: 'Michael',
     last: 'Kurrels'
   },
-  network: {'stvnwu': -2, 'Vandres': -1, 'iemanatemire': 0, 'dRosson': 3}
 });
 
 var user5 = new User({
@@ -58,7 +54,6 @@ var user5 = new User({
     first: 'David',
     last: 'Rosson'
   },
-  network: {'stvnwu': 3, 'Vandres': 0, 'mKurrel': -3, 'iemanatemire': -3, 'allenJPrice': -1}
 });
 
 var user6 = new User({
@@ -68,7 +63,6 @@ var user6 = new User({
     first: 'Allen',
     last: 'Price'
   },
-  network: {'dRosson': 1}
 });
 
 user1.save(function (err, newUser) {

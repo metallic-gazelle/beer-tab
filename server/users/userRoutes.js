@@ -8,7 +8,7 @@ module.exports = function (app) {
   app.post('/signup', userCtrl.signup);
   app.use('/table', helpers.decode);
   app.use('/tabs', helpers.decode);
-  app.post('/table', userCtrl.getTable);
-  app.post('/tabs', userCtrl.toTabs);
+  app.get('/table', userCtrl.getTable);
+  app.post('/tabs', userCtrl.addFriend);
   app.get('/tabs', userCtrl.findAllUsers);
 };

@@ -56,9 +56,9 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
 
   $scope.getTable = function () {
     getTable.getTable($scope.username)
-      .then(function (derp) {
-        $scope.network = util.toArr(derp);
-        console.log(derp);
+      .then(function (network) {
+        $scope.network = network;
+        console.log(network);
       });
   };
 
@@ -74,21 +74,36 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
   //this is used to show the add friend button, and hide the
   // new friend form
   $scope.clicked = false;
-  /*$scope.network = [];*/
+  $scope.network = [];
 
   //This function sends a request to the server, it returns
   //the updated information
-  $scope.sendBeer = function (user) {
-
+  $scope.sendBeer = function (user, drink, cost) {
+    console.log('this is the user', user)
+    cost = parseInt(cost)
     if (user) {
       console.log('sendBeer called', user);
 
       if (AuthService.isAuth()) {
-        beerPmt.newIOU(user)
+        beerPmt.newIOU(user, drink, cost)
         .then(function (derp) {
           $scope.network = util.toArr(derp.network);
 
         });
+      }
+    }
+  };
+  $scope.addUser = function(user){
+    console.log('LOGGING FROM ADDUSER', user);
+    if(user){
+
+      if(AuthService.isAuth()){
+        beerPmt.addToNetwork(user)
+        .then(function(data){
+          console.log('CALLED FROM CALLBACK', data)
+          $scope.network.push(data);
+        })
+
       }
     }
   };
@@ -99,7 +114,7 @@ main.controller('MainCtrl', function ($scope, $window, beerPmt, jwtHelper, AuthS
       if (inputStr.length > 0) {
         for (var i = 0; i < data.length; i++) {
           if (data[i].name.first.toLowerCase().match(inputStr.toLowerCase()) !== null || data[i].name.last.toLowerCase().match(inputStr.toLowerCase()) !== null) {
-            $scope.results.push({name: data[i].name.first + ' ' + data[i].name.last, username: data[i].username});
+            $scope.results.push({name: data[i].name.first + ' ' + data[i].name.last, username: data[i].username, _id: data[i]._id});
           }
         }
       }

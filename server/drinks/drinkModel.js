@@ -6,3 +6,5 @@ var DrinkSchema = new mongoose.Schema({
   cost: Number,
   username: String
 });
+
+module.exports =mongoose.model('Drink', DrinkSchema)
