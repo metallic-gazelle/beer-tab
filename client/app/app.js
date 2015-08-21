@@ -25,14 +25,15 @@ app.config(function ($stateProvider, $httpProvider, $urlRouterProvider) {
 });
 
 app.factory('AttachTokens', function ($window) {
-  // this is an $httpInterceptor
-  // its job is to stop all out going request
-  // then look in local storage and find the user's token
-  // then add it to the header so the server can validate the request
+  // $http interceptor looks for either type of token and attaches
+  // the kind found to the request headers
   var attach = {
     request: function (object) {
       var jwt = $window.localStorage.getItem('com.beer-tab');
-      if (jwt) {
+      var fbToken = $window.localStorage.getItem('com.beer-tab-fb');
+      if (!!fbToken) {
+        object.headers['x-access-token'] = fbToken;
+      } else {
         object.headers['x-access-token'] = jwt;
       }
       object.headers['Allow-Control-Allow-Origin'] = '*';
@@ -43,7 +44,29 @@ app.factory('AttachTokens', function ($window) {
 });
 
 // RUN service that authenticates all changes to url path
-app.run(function ($rootScope, $location, AuthService) {
+app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
+
+  // Initialize Facebook JS SDK (Will be called once loaded below)
+  $window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '111911505825360',
+      channelUrl : 'channel.html',
+      cookie     : true,  // enable cookies to allow the server to access 
+                          // the session
+      xfbml      : true,  // parse social plugins on this page
+      version    : 'v2.4' // use version 2.4
+    });
+  };
+    // Load Facebook JS SDK
+    (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+  // Authenticate Changes to URL Path
   $rootScope.$on('$stateChangeStart', function (evt, next, current) {
     if (next.templateUrl !== 'app/auth/signup.html' && !AuthService.isAuth()) {
       $location.path('/login');

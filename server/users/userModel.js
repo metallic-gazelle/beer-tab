@@ -5,13 +5,16 @@ var Bluebird = require('bluebird'),
 // Define user schema
 var UserSchema = new mongoose.Schema({
   username: {
-    type: String,
+    type: mongoose.Schema.Types.Mixed,
     index: { unique: true }
   },
-  password: String,
+  password: {
+    type: String,
+    default: null
+  },
   name: {
     first: String,
-    last: String,
+    last: String
   },
   bought: [{ //array of bought drinks
     type: mongoose.Schema.Types.ObjectId,

@@ -1,10 +1,10 @@
 var auth = angular.module('beer-tab.auth', []);
 
-auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService) {
-
+auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, AuthService, fbAuthService, $q) {
+  
   $scope.loginError = false;
   $scope.loginErrorMessage = '';
-
+  
   $scope.user = {};
   $scope.logIn = function () {
     $window.username = $scope.user.username;
@@ -39,8 +39,51 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
     console.log(path);
     $location.path('/' + path);
   };
+  
+  // FACEBOOK AUTHENTICATION
+  $scope.fbLogIn = function() {
+    // Return a promise that waits for login process to complete
+    var waitForLogin = function() {
+      var deferred = $q.defer();
+      fbAuthService.useFacebook('/api/users/login', function(resp){
+        deferred.resolve(resp);
+      });
+      return deferred.promise;
+    };
+    waitForLogin()
+      // After login, store token we get back in localStorage
+      .then(function (token){
+        console.log("Response from backend: ", token);
+        $window.localStorage.setItem('com.beer-tab-fb', JSON.stringify(token));
+        $location.path('/main');
+      });
+  };
+
+  $scope.fbSignUp = function() {
+    // Return a promise that waits for signup process to complete
+    var waitForSignup = function() {
+      var deferred = $q.defer();
+      fbAuthService.useFacebook('/api/users/signup', function(resp){
+        deferred.resolve(resp);
+      });
+      return deferred.promise;
+    };
+    waitForSignup()
+      // After login, store token we get back in localStorage
+      .then(function (token){
+        console.log("Response from backend: ", token);
+        $window.localStorage.setItem('com.beer-tab-fb', JSON.stringify(token));
+        $location.path('/main');
+      });
+  };
+
+  $scope.fbLogOut = function(){
+    fbAuthService.logout();
+  };
 
 })
+
+
 .directive('checkRequired', function () {
   return {
     require: 'ngModel',
@@ -55,7 +98,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   };
 })
 
-.directive('passwordMatch', [function () {
+.directive('passwordMatch', function () {
   return {
     restrict: 'A',
     scope: true,
@@ -77,5 +120,4 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
       });
     }
   };
-}]);
-
+});
