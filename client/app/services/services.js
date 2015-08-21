@@ -32,6 +32,7 @@ angular.module('beer-tab.services', [])
     $window.localStorage.removeItem('com.beer-tab');
     $window.localStorage.removeItem('com.beer-tab-fb');
     $location.path('/login');
+    setTimeout(function(){$window.location.reload()}, 500);
   };
 
   return authService;
