@@ -13,6 +13,14 @@ var UserSchema = new mongoose.Schema({
     first: String,
     last: String,
   },
+  bought: [{ //array of bought drinks
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Drink'
+  }],
+  owed: [{ //array of owed drinks
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Drink'
+  }],
   network: {
     type: mongoose.Schema.Types.Mixed,
     default: {}
