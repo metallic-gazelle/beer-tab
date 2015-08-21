@@ -45,7 +45,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   $scope.fbLogIn = function() {
     console.log("in FB login");
     FB.login(function(res){
-      fbAuthService.handleLoginStatus(res);
+      console.log(res);
     })
     fbAuthService.checkLoginStatus();
   };
@@ -55,7 +55,7 @@ auth.controller('AuthCtrl', function ($scope, $rootScope, $window, $location, Au
   };
 
   $scope.fbLogOut = function(){
-
+    fbAuthService.logout();
   };
 
 })

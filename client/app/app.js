@@ -45,7 +45,6 @@ app.factory('AttachTokens', function ($window) {
 // RUN service that authenticates all changes to url path
 app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
 
-  $rootScope.user = {};
   // Initialize Facebook JS SDK
   $window.fbAsyncInit = function() {
     FB.init({
@@ -57,10 +56,11 @@ app.run(function ($rootScope, $location, $window, AuthService, fbAuthService) {
       version    : 'v2.4' // use version 2.4
     });
 
-    FB.getLoginStatus(function(resp){
-      console.log(resp);
-      fbAuthService.LoginStatus();
-    });
+    // FB.getLoginStatus(function(resp){
+    //   console.log(resp);
+    //   fbAuthService.handleLoginStatus(resp);
+    // });
+    fbAuthService.watchLoginStatus();
   };
     // Load Facebook JS SDK
     (function(d, s, id) {
