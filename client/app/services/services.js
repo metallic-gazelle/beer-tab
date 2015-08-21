@@ -11,7 +11,7 @@ angular.module('beer-tab.services', [])
       })
       .catch(function(err){
         throw err;
-      })
+      });
   };
 
   authService.signup = function (credentials) {
@@ -24,15 +24,13 @@ angular.module('beer-tab.services', [])
   };
 
   authService.isAuth = function () {
-    return !!$window.localStorage.getItem('com.beer-tab');
+    var verdict = !!$window.localStorage.getItem('com.beer-tab-fb') || !!$window.localStorage.getItem('com.beer-tab');
+    return verdict;
   };
 
   authService.signout = function () {
-    var token = $window.localStorage.getItem('com.beer-tab');
-    token = JSON.parse(token) || token;
-    if (!token.hasOwnProperty('fb')){
-      $window.localStorage.removeItem('com.beer-tab');
-    }
+    $window.localStorage.removeItem('com.beer-tab');
+    $window.localStorage.removeItem('com.beer-tab-fb');
     $location.path('/login');
   };
 
@@ -87,6 +85,7 @@ angular.module('beer-tab.services', [])
         asyncGetUserInfo()
         // post request to our api to save user to db
         .then(function(newUser){
+          console.log("Before Post", newUser);
           return $http
             .post(path, newUser)
             .then(function (resp) {
@@ -131,10 +130,13 @@ angular.module('beer-tab.services', [])
 
 .factory('beerPmt', function ($window, $http) {
   var newIOU = function (user) {
+    var token = $window.localStorage.getItem('com.beer-tab-fb') || $window.localStorage.getItem('com.beer-tab');
+    // token = JSON.parse(token);
+    console.log("token in IOU", token);
     return $http({
       method: 'POST',
       url: '/api/users/tabs',
-      data: {token: $window.localStorage.getItem('com.beer-tab'), user: user}
+      data: {token: token, user: user}
     })
     .then(function (resp) {
       return resp.data;
